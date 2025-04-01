@@ -1,0 +1,266 @@
+<div class="min-h-screen bg-base-200 p-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-base-100 shadow-xl rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-6">Account Settings</h2>
+
+      <div class="divider"></div>
+
+      <div class="space-y-4 card-body">
+        <h2 class="card-title">Profile</h2>
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Profile Information</h3>
+            <p class="text-sm text-gray-500">Update your account information</p>
+          </div>
+          <button class="btn btn-primary">Edit Profile</button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Security Settings</h3>
+            <p class="text-sm text-gray-500">Manage your password and security preferences</p>
+          </div>
+          <button class="btn btn-secondary">Change Password</button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">Notifications</h3>
+            <p class="text-sm text-gray-500">Choose what updates you want to receive</p>
+          </div>
+          <button class="btn">Configure</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="card-body">
+        <h2 class="card-title">Two-Factor Authentication (2FA)</h2>
+        <p class="text-gray-600">Protect your account with 2FA verification methods.</p>
+
+        <div class="space-y-4 mt-4">
+          <!-- Email Section -->
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">Email</h3>
+              <p class="text-sm text-gray-500">Used for verify withdrawals</p>
+            </div>
+            <div class="space-x-2">
+              <button class="btn btn-outline" onclick="changeEmail.showModal()">Change</button>
+              <dialog id="changeEmail" #changeEmailModal class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box">
+                  <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                  </form>
+                  <div class="modal-action">
+                    <form class="w-full max-w-md mx-auto">
+                      <div class="text-center mb-6">
+                        <h1 class="text-xl font-bold text-left">
+                          New Email</h1>
+                      </div>
+                      <ng-container [tanstackField]="changeEmailForm" name="email" #email="field">
+                        <div class="form-control w-full mb-4">
+                          <label class="label" [for]="email.api.name">
+                            <span class="label-text">New Email</span>
+                          </label>
+                          <div class="relative">
+                            <input [type]="email" [name]="email.api.name" [id]="email.api.name"
+                              [value]="email.api.state.value"
+                              (input)="email.api.handleChange($any($event).target.value)"
+                              class="input input-bordered w-full pr-10" placeholder="john@authkit.com" />
+                            @if (email.api.state.meta.isDirty && email.api.state.meta.errors) {
+                            @for (error of email.api.state.meta.errors; track $index) {
+                            <span class="label-text-alt text-error">{{ error.message }}</span>
+                            }
+                            }
+                          </div>
+                        </div>
+                      </ng-container>
+                      <button type="button" class="btn btn-primary  w-full mt-6"
+                        (click)="changeEmailForm.handleSubmit()">
+                        <!-- <span *ngIf="isSubmitting()" class="loading loading-spinner"></span> -->
+                        {{ 'Continue' }}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+          </div>
+          <!-- Google Verification -->
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">Google Verification</h3>
+              <p class="text-sm text-gray-500">Not Enabled</p>
+            </div>
+            <div class="space-x-2">
+              <button class="btn btn-primary " onclick="passVerification.showModal()">Enable</button>
+              <dialog id="passVerification" class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box">
+                  <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                  </form>
+                  <div class="modal-action">
+                    <form class="w-full max-w-md mx-auto">
+                      <div class="text-center mb-6">
+                        <h1 class="text-xl font-bold text-left">
+                          Security Verification</h1>
+                      </div>
+                      <ng-container [tanstackField]="reverifyPassForm" name="password" #password="field">
+                        <div class="form-control w-full mb-4">
+                          <label class="label" [for]="password.api.name">
+                            <span class="label-text">Password</span>
+                          </label>
+                          <div class="relative">
+                            <input [type]="showPassword ? 'text' : 'password'" [name]="password.api.name"
+                              [id]="password.api.name" [value]="password.api.state.value"
+                              (input)="password.api.handleChange($any($event).target.value)"
+                              class="input input-bordered w-full pr-10" placeholder="••••••••" />
+                            @if (password.api.state.meta.isDirty && password.api.state.meta.errors) {
+                            @for (error of password.api.state.meta.errors; track $index) {
+                            <span class="label-text-alt text-error">{{ error.message }}</span>
+                            }
+                            }
+                            <button type="button"
+                              class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm btn-circle"
+                              (click)="togglePassword()">
+
+                              @if (showPassword) {
+                              <i-lucide [img]="eyeOpen" class="my-icon"></i-lucide>
+                              } @else {
+                              <i-lucide [img]="eyeClosed" class="my-icon"></i-lucide>
+                              }
+                            </button>
+                          </div>
+                          <label class="label">
+                            <a routerLink="/forgot-password" class="label-text-alt link link-hover text-primary">
+                              Forgot password?
+                            </a>
+                          </label>
+                        </div>
+                      </ng-container>
+                      <button type="button" class="btn btn-primary  w-full mt-6"
+                        (click)="reverifyPassForm.handleSubmit()">
+                        <!-- <span *ngIf="isSubmitting()" class="loading loading-spinner"></span> -->
+                        {{ 'Continue' }}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="card-body">
+        <h2 class="card-title">Security Logs</h2>
+
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Login</td>
+                <td>India Mumbai(24X7-60X4-1015)</td>
+                <td>2024/01/14 03:21:14</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="card-body">
+        <h2 class="card-title">Account Information</h2>
+        <div class="space-y-4 mt-4">
+          <!-- Freeze Account -->
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">Freeze Account</h3>
+              <p class="text-sm text-gray-500">Temporarily disable your account</p>
+            </div>
+            <button class="btn btn-outline">Freeze</button>
+          </div>
+
+          <!-- Delete Account -->
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">Delete Account</h3>
+              <p class="text-sm text-warning">Warning: This action cannot be undone</p>
+            </div>
+            <button class="btn btn-error btn-outline" (click)="deleteUserModel.showModal()">Delete</button>
+            <dialog id="deleteUserModel" #deleteUserModel class="modal modal-bottom sm:modal-middle">
+              <div class="modal-box">
+                <form method="dialog">
+                  <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <div class="modal-action">
+                  <form class="w-full max-w-md mx-auto">
+                    <div class="text-center mb-6">
+                      <h1 class="text-xl text-error font-bold text-left">
+                        Delete Account</h1>
+                    </div>
+                    <ng-container [tanstackField]="reverifyPassForm" name="password" #password="field">
+                      <div class="form-control w-full mb-4">
+                        <label class="label" [for]="password.api.name">
+                          <span class="label-text">Password</span>
+                        </label>
+                        <div class="relative">
+                          <input [type]="showPassword ? 'text' : 'password'" [name]="password.api.name"
+                            [id]="password.api.name" [value]="password.api.state.value"
+                            (input)="password.api.handleChange($any($event).target.value)"
+                            class="input input-bordered w-full pr-10" placeholder="••••••••" />
+                          @if (password.api.state.meta.isDirty && password.api.state.meta.errors) {
+                          @for (error of password.api.state.meta.errors; track $index) {
+                          <span class="label-text-alt text-error">{{ error.message }}</span>
+                          }
+                          }
+                          <button type="button"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-sm btn-circle"
+                            (click)="togglePassword()">
+
+                            @if (showPassword) {
+                            <i-lucide [img]="eyeOpen" class="my-icon"></i-lucide>
+                            } @else {
+                            <i-lucide [img]="eyeClosed" class="my-icon"></i-lucide>
+                            }
+                          </button>
+                        </div>
+                        <label class="label">
+                          <a routerLink="/forgot-password" class="label-text-alt link link-hover text-primary">
+                            Forgot password?
+                          </a>
+                        </label>
+                      </div>
+                    </ng-container>
+                    <div class="flex justify-center flex-col">
+                      <button type="button" class="btn btn-primary  w-full mt-6" (click)="deleteUser()">
+                        <!-- <span *ngIf="isSubmitting()" class="loading loading-spinner"></span> -->
+                        {{ 'Delete' }}
+                      </button>
+                      <span class="text-center text-error">This Action Cannot Be Reverted!</span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-semibold">Delete Account</h3>
+              <p class="text-sm text-warning">Warning: This action cannot be undone</p>
+            </div>
+            <button class="btn btn-error" (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

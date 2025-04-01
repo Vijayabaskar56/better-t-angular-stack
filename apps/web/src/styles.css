@@ -1,1 +1,104 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin 'tailwind-scrollbar';
+@utility card {
+	@apply bg-base-100 shadow-lg rounded-lg p-8;
+}
+/* @plugin "daisyui/theme" {} */
+:root {
+	--muted: 240 3.7% 15.9%;
+	--muted-foreground: 240 5% 64.9%;
+}
+/* @layer utilities {
+	@keyframes wiggle {
+		0%,
+		100% {
+			transform: rotate(-3deg);
+		}
+		50% {
+			transform: rotate(3deg);
+		}
+	}
+
+	@keyframes fade-in-down {
+		0% {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fade-out-down {
+		from {
+			opacity: 1;
+			transform: translateY(0px);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+
+	@keyframes fade-in-up {
+		0% {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fade-out-up {
+		from {
+			opacity: 1;
+			transform: translateY(0px);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+	}
+
+	.animate-wiggle {
+		animation: wiggle 1s ease-in-out infinite;
+	}
+
+	.animate-fade-in-down {
+		animation: fade-in-down 0.3s ease-out;
+	}
+
+	.animate-fade-out-down {
+		animation: fade-out-down 0.3s ease-out;
+	}
+
+	.animate-fade-in-up {
+		animation: fade-in-up 0.3s ease-out;
+	}
+
+	.animate-fade-out-up {
+		animation: fade-out-up 0.3s ease-out;
+	}
+} */
+/*
+@layer components {
+	.dropdown-content {
+		@apply pointer-events-none scale-95 opacity-0 duration-100 ease-in;
+	}
+
+	.dropdown:hover > .dropdown-content {
+		@apply pointer-events-auto block scale-100 animate-fade-in-up opacity-100 duration-200;
+	}
+} */
+
+/** Scroll bar **/
+@supports selector(::-webkit-scrollbar) {
+	.supports-scrollbars\: pr-2 {
+		padding-right: 0.5rem;
+	}
+}

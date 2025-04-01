@@ -1,0 +1,26 @@
+<!-- Loading State -->
+<div
+  *ngIf="false"
+  class="fixed inset-0 bg-base-100 z-50 flex items-center justify-center"
+>
+  <div class="flex flex-col items-center gap-4">
+    <div class="loading loading-spinner loading-lg text-primary"></div>
+    <p class="text-base-content/60">Loading your application...</p>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="min-h-screen flex flex-col bg-base-100">
+  <!-- <app-header></app-header> -->
+
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer footer-center p-4 bg-base-200 text-base-content">
+    <aside>
+      <p>Copyright © 2025 - All rights reserved by AuthFlow</p>
+    </aside>
+  </footer>
+</div>

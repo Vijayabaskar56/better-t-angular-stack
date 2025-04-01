@@ -1,0 +1,62 @@
+<div class="container mx-auto px-4 py-8">
+    <!-- Header with back button -->
+    <div class="flex items-center mb-8">
+        <a routerLink="/security" class="text-gray-600 hover:text-gray-800 mr-4">← Return</a>
+        <h1 class="text-2xl font-bold">Set Up Google Verification</h1>
+    </div>
+
+    <!-- Info banner -->
+    <div class="alert alert-info mb-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>For more information, please refer to <a href="#" class="link">Instructions for Google
+                Verification</a></span>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="card bg-base-100 shadow-xl mb-8">
+        <div class="card-body items-center text-center">
+            <h2 class="card-title mb-4">Google QR Code and Keys</h2>
+            <p class="text-gray-600 mb-6">Please record or back up the 2-step verification key on paper and the mobile
+                terminal</p>
+
+            <!-- QR Code -->
+            <div class="bg-white p-4 rounded-lg mb-4">
+                <qr-code value="{{code$()}}" size="200" errorCorrectionLevel="M" />
+            </div>
+
+            <!-- Verification Key -->
+            <div class="flex items-center gap-2 mb-4">
+                <code class="bg-base-200 p-2 rounded">{{code$()}}</code>
+                <button class="btn btn-sm">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Input -->
+    <div class="card bg-base-100 shadow-xl">
+        <form>
+            <div class="card-body flex justify-center items-center">
+                <ng-container [tanstackField]="totpForm" name="code" #code="field">
+                    <div class="form-control justify-center items-center flex flex-col w-full mb-4">
+                        <label class="card-title mb-4" [for]="code.api.name">Google 2FA Code</label>
+                        <input placeholder="Enter verification code" [name]="code.api.name" [id]="code.api.name"
+                            (input)="code.api.handleChange($any($event).target.value)" [value]="code.api.state.value"
+                            class="input input-bordered w-full max-w-xs mb-4" placeholder="••••••••" />
+                    </div>
+                    @if (code.api.state.meta.isDirty && code.api.state.meta.errors) {
+                    @for (error of code.api.state.meta.errors; track $index) {
+                    <span class="label-text-alt text-error">{{ error.message }}</span>
+                    }
+                    }
+                </ng-container>
+                <button class="btn btn-primary w-full" type="button" (click)="totpForm.handleSubmit()"
+                    [disabled]="!canSubmit()">
+                    <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+                    {{ isSubmitting() ? 'Loading...' : 'Activate' }}
+                </button>
+            </div>
+        </form>
+    </div>

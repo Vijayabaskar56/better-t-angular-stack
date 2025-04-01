@@ -1,8 +1,30 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+	type ApplicationConfig,
+	provideZoneChangeDetection,
+} from "@angular/core";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideRouter } from "@angular/router";
 
-import { routes } from './app.routes';
+import {
+	provideClientHydration,
+	withEventReplay,
+} from "@angular/platform-browser";
+import {
+	QueryClient,
+	provideTanStackQuery,
+	withDevtools,
+} from "@tanstack/angular-query-experimental";
+import { routes } from "./app.routes";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes)]
+	providers: [
+		provideZoneChangeDetection({ eventCoalescing: true }),
+		provideRouter(routes),
+		provideAnimations(),
+		provideClientHydration(withEventReplay()),
+		provideTanStackQuery(
+			new QueryClient(),
+			withDevtools(() => ({ loadDevtools: "auto" })),
+		),
+	],
 };

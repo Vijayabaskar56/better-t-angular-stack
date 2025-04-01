@@ -1,0 +1,40 @@
+<form class="w-full max-w-md mx-auto bg-base-100 shadow-lg rounded-lg p-8">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold">Enter OTP Code</h1>
+    <p class="text-base-content/60 mt-2">
+      We've sent a 6-digit code to your email
+    </p>
+  </div>
+
+
+  <ng-container name="otp">
+    <div class="flex gap-2 justify-center mb-6">
+      <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" [config]="{ length: 6 }"></ng-otp-input>
+    </div>
+  </ng-container>
+
+
+  <div class="text-center mb-6">
+    <p class="text-sm text-base-content/60">
+      Didn't receive the code?
+      <ng-container *ngIf="timeLeft > 0">
+        Resend in {{ timeLeft }}s
+      </ng-container>
+      <button *ngIf="timeLeft === 0" type="button" class="link link-primary ml-1" (click)="resendOTP()">
+        Resend OTP
+      </button>
+    </p>
+  </div>
+
+  <button type="button" class="btn btn-primary w-full" [disabled]="!canSubmit()" (click)="submitOTP()">
+    <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+    {{ isSubmitting() ? 'Verifying...' : 'Verify OTP' }}
+  </button>
+
+
+  <p class="text-center mt-6 text-base-content/60">
+    <a routerLink="/login" class="link link-hover">
+      ← Back to Login
+    </a>
+  </p>
+</form>

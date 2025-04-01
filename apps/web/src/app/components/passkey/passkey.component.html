@@ -1,0 +1,114 @@
+<div class="container mx-auto px-4 py-8">
+    <!-- Header with back button -->
+    <div class="flex items-center mb-8">
+        <a routerLink="/account" class=" text-gray-600 cursor-pointer hover:text-gray-800 mr-4">← Return</a>
+        <h1 class="text-2xl font-bold">Passkeys</h1>
+    </div>
+
+    <!-- Empty state with illustration -->
+    <div class="text-center py-12">
+        <div class="w-32 h-32 mx-auto mb-6">
+            <!-- Placeholder for passkey icon -->
+            <div class="bg-base-200 rounded-full p-8">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+        </div>
+        <h2 class="text-xl font-semibold mb-2">You've not created a passkey yet</h2>
+        <p class="text-gray-600 mb-2">
+            Passkeys provide strong and effective account protection, shielding you from phishing attacks and other
+            threats while being a simple and secure login method.
+            <a href="#" class="text-primary hover:text-primary-focus">Learn more</a>
+        </p>
+    </div>
+
+    <!-- Features grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Instant Login -->
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                    </svg>
+                    <h3 class="font-semibold">Instant Login Without Password</h3>
+                </div>
+                <p class="text-sm text-gray-600">Use facial recognition, fingerprint, or your device lock to verify
+                    logins instead</p>
+            </div>
+        </div>
+
+        <!-- Cross Device -->
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <h3 class="font-semibold">Cross-Device Authentication</h3>
+                </div>
+                <p class="text-sm text-gray-600">Authenticate logins on other devices with your mobile</p>
+            </div>
+        </div>
+
+        <!-- Extra Verification -->
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <h3 class="font-semibold">Extra Verification for Sensitive Actions</h3>
+                </div>
+                <p class="text-sm text-gray-600">Stronger security against phishing attacks and other threats</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Passkey Button -->
+    <div class="text-center">
+        <button class="btn btn-primary btn-wide" onclick="my_modal_5.showModal()">+ Create Passkey</button>
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <div class="modal-action">
+                    <form class="w-full max-w-md mx-auto">
+                        <div class="text-center mb-6">
+                            <h1 class="text-xl font-bold text-left">
+                                Security Verification</h1>
+                        </div>
+                        <ng-container class="form-control w-full" [tanstackField]="logInForm" name="email"
+                            #email="field">
+                            <div class="form-control w-full mb-4">
+                                <div class="join w-full justify-center flex">
+                                    <input class="input join-item" placeholder="Email" />
+                                    <button type="button" (click)="logInForm.handleSubmit()"
+                                        class="btn-primary btn join-item w-fit" [disabled]="!canSubmit()">
+                                        <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+                                        {{ isSubmitting() ? 'Sending...' : 'Send' }}
+                                    </button>
+                                </div>
+                                @if (email.api.state.meta.isDirty && email.api.state.meta.errors) {
+                                @for (error of email.api.state.meta.errors; track $index) {
+                                <span class="label-text-alt text-error">{{ error.message }}</span>
+                                }
+                                }
+                            </div>
+                        </ng-container>
+                        <button type="button" class="btn btn-primary  w-full mt-6" [disabled]="!canSubmit()">
+                            <span *ngIf="isSubmitting()" class="loading loading-spinner"></span>
+                            {{ 'Continue' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    </div>
+</div>
