@@ -44,28 +44,28 @@ app.get("/", (c) => {
 });
 
 serve(
-		{
-				fetch: app.fetch,
-				port: 3000,
-		},
-		(info) => {
-				console.log(`Server is running on http://localhost:${info.port}`);
-		},
+	{
+		fetch: app.fetch,
+		port: 3000,
+	},
+	(info) => {
+		console.log(`Server is running on http://localhost:${info.port}`);
+	},
 );
 
 
 
 app.post("/ai", async (c) => {
-		const body = await c.req.json();
-		const messages = body.messages || [];
+	const body = await c.req.json();
+	const messages = body.messages || [];
 
-		const result = streamText({
-				model: google("gemini-2.0-flash-exp"),
-				messages,
-		});
+	const result = streamText({
+		model: google("gemini-2.0-flash-exp"),
+		messages,
+	});
 
-		c.header("X-Vercel-AI-Data-Stream", "v1");
-		c.header("Content-Type", "text/plain; charset=utf-8");
+	c.header("X-Vercel-AI-Data-Stream", "v1");
+	c.header("Content-Type", "text/plain; charset=utf-8");
 
-		return stream(c, (stream) => stream.pipe(result.toDataStream()));
+	return stream(c, (stream) => stream.pipe(result.toDataStream()));
 });

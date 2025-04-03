@@ -15,6 +15,7 @@ import {
 	withDevtools,
 } from "@tanstack/angular-query-experimental";
 import { routes } from "./app.routes";
+import { provideTrpcClient } from "./utils/trpc-client";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideAnimations(),
 		provideClientHydration(withEventReplay()),
+		provideTrpcClient(),
 		provideTanStackQuery(
 			new QueryClient(),
 			withDevtools(() => ({ loadDevtools: "auto" })),

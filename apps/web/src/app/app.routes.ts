@@ -14,12 +14,16 @@ import { GoogleVerificationComponent } from "./screens/google-verification/googl
 import { LoginComponent } from "./screens/login/login.component";
 import { OTPComponent } from "./screens/otp/otp.component";
 import { SignupComponent } from "./screens/signup/signup.component";
+import { TodoComponent } from "./screens/todo-list/todo.component";
 export const routes: Routes = [
 	{ path: "shell", component: AppShellComponent },
 	{
 		path: "",
 		component: AppLayoutComponent,
-		children: [{ path: "", component: AppComponent, pathMatch: "full" }],
+		children: [
+			{ path: "", component: AppComponent, pathMatch: "full" },
+			{ path: 'todo', component: TodoComponent, pathMatch: "full" }
+		],
 	},
 	{
 		path: "account",
