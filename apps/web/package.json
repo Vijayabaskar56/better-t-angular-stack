@@ -1,5 +1,5 @@
 {
-  "name": "angular-starter-kit",
+  "name": "web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -62,24 +62,8 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "simple-git-hooks": "^2.12.1",
     "tailwind-scrollbar": "^4.0.1",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.27.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "@parcel/watcher",
-      "esbuild",
-      "lmdb",
-      "msgpackr-extract",
-      "nx",
-      "simple-git-hooks"
-    ]
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm run lint",
-    "pre-push": "pnpm run format"
   }
 }

@@ -4,13 +4,17 @@
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
 		"strict": true,
 		"skipLibCheck": true,
-		"baseUrl": "./",
+		"baseUrl": "src",
+		"rootDir": "./",
 		"outDir": "./dist",
 		"types": ["node"],
-		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx"
+		"noPropertyAccessFromIndexSignature": false,
+		"paths": {
+			"@server/*": ["./*"],
+		  },
 	},
 	"tsc-alias": {
 		"resolveFullPaths": true

@@ -1,31 +1,28 @@
 import { CommonModule } from "@angular/common";
-import { Component, type OnInit, signal } from "@angular/core";
+import { Component, inject, type OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { injectTrpcClient } from "../../utils/trpc-client";
+import { injectQuery, QueryClient } from "@tanstack/angular-query-experimental";
 
 
 interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }
 @Component({
   selector: "app-todo",
   template: `
-	 <div class="min-h-screen bg-black">
-      <nav class="border-b border-gray-800 px-4">
-        <ul class="flex space-x-4">
-          <li><a href="#" class="py-4 inline-block text-gray-400">Home</a></li>
-          <li><a href="#" class="py-4 inline-block text-white">Todos</a></li>
-          <li><a href="#" class="py-4 inline-block text-gray-400">Dashboard</a></li>
-        </ul>
-      </nav>
-
       <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-gray-900 rounded-lg p-6">
           <h1 class="text-2xl font-bold mb-1 text-white">Todo List</h1>
           <p class="text-gray-400 text-sm mb-6">Manage your tasks efficiently</p>
-
+          @if(this.query.isLoading()) {
+              <p>Loadingg.......</p>
+          }
+          @if(this.query.isError()) {
+              <p>Error.......</p>
+          }
           <div class="flex gap-2 mb-6">
             <input
               type="text"
@@ -43,7 +40,7 @@ interface Todo {
           </div>
 
           <ul class="space-y-2">
-            <li *ngFor="let todo of todos" class="flex items-center gap-2 p-2 rounded-lg bg-gray-800 group">
+            <li *ngFor="let todo of todos()" class="flex items-center gap-2 p-2 rounded-lg bg-gray-800 group">
               <input
                 type="checkbox"
                 [(ngModel)]="todo.completed"
@@ -64,7 +61,7 @@ interface Todo {
           </ul>
         </div>
       </div>
-    </div>`,
+    `,
   standalone: true,
   imports: [
     CommonModule,
@@ -72,16 +69,26 @@ interface Todo {
   ],
 })
 export class TodoComponent implements OnInit {
-  todos = signal<Todo[]>([])
+  todos = signal<Todo[]>([
+    { id: '2342', completed: true, text: 'test' }
+  ])
   newTodo = '';
   private _trpc = injectTrpcClient();
+  queryClient = inject(QueryClient)
+
+  query = injectQuery(() => ({
+    queryKey: ['healthCheck'],
+    queryFn: () => this._trpc.healthCheck.query(),
+  }))
 
   ngOnInit(): void {
+    console.log(this.query.data(), 'query')
     this._trpc.todo.getAll.query().subscribe({
       complete: () => { },
-      next: (data) => { },
+      next: (data) => this.todos.set(data.map(todo => ({ ...todo, id: todo.id }))),
       error: () => { }
     })
+
   }
   addTodo() {
     if (this.newTodo.trim()) {
@@ -90,20 +97,12 @@ export class TodoComponent implements OnInit {
         next: (data) => { },
         error: () => { }
       })
-      this.todos.update(todos => [
-        ...todos,
-        {
-          id: Date.now(),
-          text: this.newTodo.trim(),
-          completed: false
-        }
-      ]);
       this.newTodo = '';
     }
   }
 
   deleteTodo(todo: Todo) {
-    this._trpc.todo.delete.mutate({ id: 12 }).subscribe({
+    this._trpc.todo.delete.mutate({ id: todo.id }).subscribe({
       complete: () => { },
       next: (data) => { },
       error: () => { }
@@ -111,7 +110,7 @@ export class TodoComponent implements OnInit {
   }
 
   updateTodo(todo: Todo) {
-    this._trpc.todo.toggle.mutate({ id: 1, completed: false }).subscribe({
+    this._trpc.todo.toggle.mutate({ id: todo.id, completed: false }).subscribe({
       complete: () => { },
       next: (data) => { },
       error: () => { }

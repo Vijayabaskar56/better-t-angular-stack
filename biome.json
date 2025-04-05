@@ -31,6 +31,9 @@
 			"recommended": true,
 			"correctness": {
 				"useExhaustiveDependencies": "info"
+			},
+			"style" : {
+				"noNonNullAssertion" : "off"
 			}
 		}
 	},

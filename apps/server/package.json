@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.3",
+    "@better-auth-kit/reverify": "^0.2.0",
     "@hono/node-server": "^1.14.0",
     "@hono/trpc-server": "^0.3.4",
     "@prisma/client": "^6.5.0",
@@ -21,11 +22,17 @@
     "better-auth": "^1.2.4",
     "dotenv": "^16.4.7",
     "hono": "^4.7.5",
+    "ioredis": "^5.6.0",
+    "nodemailer": "^6.10.0",
     "superjson": "^2.2.2",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "@repo/api-types": "repo:*"
   },
   "devDependencies": {
     "@types/node": "^22.13.11",
+    "@types/nodemailer": "^6.4.17",
+    "@types/nodemailer-express-handlebars": "^4.0.5",
+    "nodemailer-express-handlebars": "^7.0.0",
     "prisma": "^6.5.0",
     "tsc-alias": "^1.8.11",
     "tsx": "^4.19.2",

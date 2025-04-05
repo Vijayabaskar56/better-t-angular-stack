@@ -23,7 +23,7 @@ export const todoRouter = router({
     }),
 
   toggle: publicProcedure
-    .input(z.object({ id: z.number(), completed: z.boolean() }))
+    .input(z.object({ id: z.string(), completed: z.boolean() }))
     .mutation(async ({ input }) => {
       try {
         return await prisma.todo.update({
@@ -39,7 +39,7 @@ export const todoRouter = router({
     }),
 
   delete: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       try {
         return await prisma.todo.delete({

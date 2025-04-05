@@ -22,7 +22,6 @@ export const appConfig: ApplicationConfig = {
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
 		provideAnimations(),
-		provideClientHydration(withEventReplay()),
 		provideTrpcClient(),
 		provideTanStackQuery(
 			new QueryClient(),

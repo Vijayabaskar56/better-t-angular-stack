@@ -4,7 +4,7 @@
 		"outDir": "./dist/out-tsc",
 		"strict": true,
 		"noImplicitOverride": true,
-		"noPropertyAccessFromIndexSignature": true,
+		"noPropertyAccessFromIndexSignature": false,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 		"skipLibCheck": true,
@@ -13,13 +13,29 @@
 		"experimentalDecorators": true,
 		"moduleResolution": "bundler",
 		"importHelpers": true,
-		"target": "ES2022",
-		"module": "ES2022"
+		"target": "ESNext",
+		"module": "ESNext",
+		"paths": {
+			"@server/*": ["../server/src/*"],
+			"@src/*": ["./src/*"],
+		}
 	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx"
+	  ],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"out-tsc",
+		"**/*.spec.ts",
+		"**/*.test.ts",
+		"**/*.e2e-spec.ts",
+	],
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
 		"strictInjectionParameters": true,
 		"strictInputAccessModifiers": true,
-		"strictTemplates": true
+		"strictTemplates": true,
 	}
 }
