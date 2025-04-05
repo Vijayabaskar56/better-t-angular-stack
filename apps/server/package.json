@@ -25,8 +25,7 @@
     "ioredis": "^5.6.0",
     "nodemailer": "^6.10.0",
     "superjson": "^2.2.2",
-    "zod": "^3.24.2",
-    "@repo/api-types": "repo:*"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/node": "^22.13.11",
