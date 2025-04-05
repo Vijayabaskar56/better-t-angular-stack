@@ -1,36 +1,32 @@
-# prod
-dist/
+# compiled output
+/dist
+/node_modules
 
-# dev
-.yarn/
-!.yarn/releases
-.vscode/*
-!.vscode/launch.json
-!.vscode/*.code-snippets
-.idea/workspace.xml
-.idea/usage.statistics.xml
-.idea/shelf
-
-# deps
-node_modules/
-.wrangler
-
-# env
-.env
-.env.production
-.dev.vars
-
-# logs
-logs/
-*.log
+# Logs
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# misc
+# OS
 .DS_Store
 
-# local db
-*.db*
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

@@ -78,15 +78,15 @@ export class TodoComponent implements OnInit {
 
   query = injectQuery(() => ({
     queryKey: ['healthCheck'],
-    queryFn: () => this._trpc.healthCheck.query(),
+    queryFn: () => this._trpc.todo.create.mutate({ text: '' })
   }))
 
   ngOnInit(): void {
     console.log(this.query.data(), 'query')
     this._trpc.todo.getAll.query().subscribe({
-      complete: () => { },
-      next: (data) => this.todos.set(data.map(todo => ({ ...todo, id: todo.id }))),
-      error: () => { }
+      complete: (): void => { },
+      next: (data: Todo[]): void => this.todos.set(data.map((todo: Todo) => ({ ...todo, id: todo.id }))),
+      error: (err: unknown): void => { console.error(err); }
     })
 
   }

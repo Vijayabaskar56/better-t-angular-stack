@@ -1,13 +1,14 @@
-import type { Context as HonoContext } from "hono";
+import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
 import { auth } from "./auth";
+import { fromNodeHeaders } from "better-auth/node";
 
 export type CreateContextOptions = {
-  context: HonoContext;
+  context: CreateFastifyContextOptions;
 };
 
 export async function createContext({ context }: CreateContextOptions) {
   const session = await auth.api.getSession({
-    headers: context.req.raw.headers,
+    headers: fromNodeHeaders(context.req.headers),
   });
 
   return {

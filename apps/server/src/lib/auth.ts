@@ -5,7 +5,9 @@ import { sendMail } from './sendEmail.js'
 import { admin, captcha, emailOTP, twoFactor, username } from "better-auth/plugins";
 import { reverify } from "@better-auth-kit/reverify";
 import type { SendMailParams } from "../types/index";
-
+import FastifyBetterAuth from 'fastify-better-auth';
+import fp from 'fastify-plugin';
+import type { FastifyInstance } from "fastify";
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "mongodb",
@@ -171,3 +173,8 @@ export const auth = betterAuth({
   // },
   // Removed duplicate trustedOrigins property
 });
+
+
+async function authPlugin(fastify: FastifyInstance) {
+  await fastify.register(FastifyBetterAuth, { auth });
+}

@@ -1,71 +1,95 @@
+import path from 'node:path'
 
-import { trpcServer } from "@hono/trpc-server";
-import "dotenv/config";
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import { logger } from "hono/logger";
-import { auth } from "./lib/auth";
-import { createContext } from "./lib/context";
-import { serve } from "@hono/node-server";
-import { appRouter } from "./routers/index";
+import fastifyAutoload from '@fastify/autoload'
+import * as trpcFastify from '@trpc/server/adapters/fastify'
+import type { FastifyBaseLogger, FastifyInstance, FastifyPluginOptions, FastifyTypeProviderDefault } from 'fastify'
+import type { IncomingMessage, Server, ServerResponse } from 'node:http'
+import appRouter from './routers'
 
-import { streamText } from "ai";
-import { google } from "@ai-sdk/google";
-import { stream } from "hono/streaming";
+export default async function serviceApp(
+	fastify: FastifyInstance<
+		Server<typeof IncomingMessage, typeof ServerResponse>,
+		IncomingMessage,
+		ServerResponse<IncomingMessage>,
+		FastifyBaseLogger,
+		FastifyTypeProviderDefault
+	>,
+	opts: FastifyPluginOptions
+) {
+	// biome-ignore lint/performance/noDelete: <explanation>
+	delete opts.skipOverride // This option only serves testing purpose
+	// This loads all external plugins defined in plugins/external
+	// those should be registered first as your custom plugins might depend on them
+	await fastify.register(fastifyAutoload, {
+		dir: path.join(__dirname, 'plugins/external'),
+		options: { ...opts },
+		autoHooks: true,
+		cascadeHooks: true
+	})
 
-const app = new Hono();
+	// This loads all your custom plugins defined in plugins/custom
+	// those should be support plugins that are reused
+	// through your application
+	fastify.register(fastifyAutoload, {
+		dir: path.join(__dirname, 'plugins/custom'),
+		options: { ...opts }
+	})
+	// This loads all plugins defined in routes
+	// // define your routes in one of these
+	// fastify.register(trpcFastify.fastifyTRPCPlugin, {
+	// 	prefix: '/v1',
+	// 	trpcOptions: {
+	// 		router: appRouter
+	// 	}
+	// })
 
-app.use(logger());
+	fastify.setErrorHandler((err, request, reply) => {
+		fastify.log.error(
+			{
+				err,
+				request: {
+					method: request.method,
+					url: request.url,
+					query: request.query,
+					params: request.params
+				}
+			},
+			'Unhandled error occurred'
+		)
 
-app.use(
-	"/*",
-	cors({
-		origin: process.env.CORS_ORIGIN || "",
-		allowMethods: ["GET", "POST", "OPTIONS"],
-		allowHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	}),
-);
+		reply.code(err.statusCode ?? 500)
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+		let message = 'Internal Server Error'
+		if (err.statusCode && err.statusCode < 500) {
+			message = err.message
+		}
 
-app.use(
-	"/trpc/*",
-	trpcServer({
-		router: appRouter,
-		createContext: (_opts, context) => {
-			return createContext({ context });
+		return { message }
+	})
+
+	// An attacker could search for valid URLs if your 404 error handling is not rate limited.
+	fastify.setNotFoundHandler(
+		{
+			preHandler: fastify.rateLimit({
+				max: 3,
+				timeWindow: 500
+			})
 		},
-	}),
-);
+		(request, reply) => {
+			request.log.warn(
+				{
+					request: {
+						method: request.method,
+						url: request.url,
+						query: request.query,
+						params: request.params
+					}
+				},
+				'Resource not found'
+			)
 
-app.get("/", (c) => {
-	return c.text("OK");
-});
+			reply.code(404)
 
-serve(
-	{
-		fetch: app.fetch,
-		port: 3000,
-	},
-	(info) => {
-		console.log(`Server is running on http://localhost:${info.port}`);
-	},
-);
-
-
-
-app.post("/ai", async (c) => {
-	const body = await c.req.json();
-	const messages = body.messages || [];
-
-	const result = streamText({
-		model: google("gemini-2.0-flash-exp"),
-		messages,
-	});
-
-	c.header("X-Vercel-AI-Data-Stream", "v1");
-	c.header("Content-Type", "text/plain; charset=utf-8");
-
-	return stream(c, (stream) => stream.pipe(result.toDataStream()));
-});
+			return { message: 'Not Found' }
+		})
+}
