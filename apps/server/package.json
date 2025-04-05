@@ -6,6 +6,8 @@
     "dev": "tsx watch src/server.ts",
     "test": "jest",
     "build": "tsc -p tsconfig.json",
+    "format": "biome format src",
+    "lint": "biome check src --fix",
     "db:push": "prisma db push --schema ./prisma/schema",
     "db:studio": "prisma studio"
   },
@@ -27,6 +29,7 @@
     "@trpc/client": "^10.25.0",
     "@trpc/server": "^10.25.0",
     "better-auth": "^1.2.5",
+    "biome": "^0.3.3",
     "close-with-grace": "^2.2.0",
     "dotenv": "^16.4.1",
     "drizzle-orm": "^0.29.3",

@@ -22,7 +22,7 @@ export const routes: Routes = [
 		component: AppLayoutComponent,
 		children: [
 			{ path: "", component: AppComponent, pathMatch: "full" },
-			{ path: 'todo', component: TodoComponent, pathMatch: "full" }
+			{ path: "todo", component: TodoComponent, pathMatch: "full" },
 		],
 	},
 	{

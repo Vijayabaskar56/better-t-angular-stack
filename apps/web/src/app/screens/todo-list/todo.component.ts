@@ -1,18 +1,17 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, type OnInit, signal } from "@angular/core";
+import { Component, type OnInit, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { QueryClient, injectQuery } from "@tanstack/angular-query-experimental";
 import { injectTrpcClient } from "../../utils/trpc-client";
-import { injectQuery, QueryClient } from "@tanstack/angular-query-experimental";
-
 
 interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
+	id: string;
+	text: string;
+	completed: boolean;
 }
 @Component({
-  selector: "app-todo",
-  template: `
+	selector: "app-todo",
+	template: `
       <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-gray-900 rounded-lg p-6">
           <h1 class="text-2xl font-bold mb-1 text-white">Todo List</h1>
@@ -62,59 +61,55 @@ interface Todo {
         </div>
       </div>
     `,
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-  ],
+	standalone: true,
+	imports: [CommonModule, FormsModule],
 })
 export class TodoComponent implements OnInit {
-  todos = signal<Todo[]>([
-    { id: '2342', completed: true, text: 'test' }
-  ])
-  newTodo = '';
-  private _trpc = injectTrpcClient();
-  queryClient = inject(QueryClient)
+	todos = signal<Todo[]>([{ id: "2342", completed: true, text: "test" }]);
+	newTodo = "";
+	private _trpc = injectTrpcClient();
+	queryClient = inject(QueryClient);
 
-  query = injectQuery(() => ({
-    queryKey: ['healthCheck'],
-    queryFn: () => this._trpc.todo.create.mutate({ text: '' })
-  }))
+	query = injectQuery(() => ({
+		queryKey: ["healthCheck"],
+		queryFn: () => this._trpc.todo.create.mutate({ text: "" }),
+	}));
 
-  ngOnInit(): void {
-    console.log(this.query.data(), 'query')
-    this._trpc.todo.getAll.query().subscribe({
-      complete: (): void => { },
-      next: (data: Todo[]): void => this.todos.set(data.map((todo: Todo) => ({ ...todo, id: todo.id }))),
-      error: (err: unknown): void => { console.error(err); }
-    })
+	ngOnInit(): void {
+		console.log(this.query.data(), "query");
+		this._trpc.todo.getAll.query().subscribe({
+			complete: (): void => {},
+			next: (data: Todo[]): void =>
+				this.todos.set(data.map((todo: Todo) => ({ ...todo, id: todo.id }))),
+			error: (err: unknown): void => {
+				console.error(err);
+			},
+		});
+	}
+	addTodo() {
+		if (this.newTodo.trim()) {
+			this._trpc.todo.create.mutate({ text: "" }).subscribe({
+				complete: () => {},
+				next: (data) => {},
+				error: () => {},
+			});
+			this.newTodo = "";
+		}
+	}
 
-  }
-  addTodo() {
-    if (this.newTodo.trim()) {
-      this._trpc.todo.create.mutate({ text: '' }).subscribe({
-        complete: () => { },
-        next: (data) => { },
-        error: () => { }
-      })
-      this.newTodo = '';
-    }
-  }
+	deleteTodo(todo: Todo) {
+		this._trpc.todo.delete.mutate({ id: todo.id }).subscribe({
+			complete: () => {},
+			next: (data) => {},
+			error: () => {},
+		});
+	}
 
-  deleteTodo(todo: Todo) {
-    this._trpc.todo.delete.mutate({ id: todo.id }).subscribe({
-      complete: () => { },
-      next: (data) => { },
-      error: () => { }
-    })
-  }
-
-  updateTodo(todo: Todo) {
-    this._trpc.todo.toggle.mutate({ id: todo.id, completed: false }).subscribe({
-      complete: () => { },
-      next: (data) => { },
-      error: () => { }
-    })
-  }
-
+	updateTodo(todo: Todo) {
+		this._trpc.todo.toggle.mutate({ id: todo.id, completed: false }).subscribe({
+			complete: () => {},
+			next: (data) => {},
+			error: () => {},
+		});
+	}
 }

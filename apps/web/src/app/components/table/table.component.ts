@@ -67,7 +67,9 @@ export class TableComponent implements OnInit {
 
 	constructor() {
 		this.http
-			.get<User[]>("https://cors-anywhere.herokuapp.com/https://freetestapi.com/api/v1/users?limit=8")
+			.get<User[]>(
+				"https://cors-anywhere.herokuapp.com/https://freetestapi.com/api/v1/users?limit=8",
+			)
 			.subscribe({
 				next: (data) => this.users.set(data),
 				error: (error) => {
@@ -229,5 +231,5 @@ export class TableComponent implements OnInit {
 	filterHideColumns(): Column<User, unknown>[] {
 		return this.table.getAllColumns().filter((column) => column.getCanHide());
 	}
-	ngOnInit() { }
+	ngOnInit() {}
 }
