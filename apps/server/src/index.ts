@@ -5,6 +5,7 @@ import * as trpcFastify from '@trpc/server/adapters/fastify'
 import type { FastifyBaseLogger, FastifyInstance, FastifyPluginOptions, FastifyTypeProviderDefault } from 'fastify'
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import appRouter from './routers'
+import { connectDB } from './db'
 
 export default async function serviceApp(
 	fastify: FastifyInstance<
@@ -16,6 +17,8 @@ export default async function serviceApp(
 	>,
 	opts: FastifyPluginOptions
 ) {
+	connectDB()
+
 	// biome-ignore lint/performance/noDelete: <explanation>
 	delete opts.skipOverride // This option only serves testing purpose
 	// This loads all external plugins defined in plugins/external
@@ -36,12 +39,12 @@ export default async function serviceApp(
 	})
 	// This loads all plugins defined in routes
 	// // define your routes in one of these
-	// fastify.register(trpcFastify.fastifyTRPCPlugin, {
-	// 	prefix: '/v1',
-	// 	trpcOptions: {
-	// 		router: appRouter
-	// 	}
-	// })
+	fastify.register(trpcFastify.fastifyTRPCPlugin, {
+		prefix: '/api/trpc',
+		trpcOptions: {
+			router: appRouter
+		}
+	})
 
 	fastify.setErrorHandler((err, request, reply) => {
 		fastify.log.error(

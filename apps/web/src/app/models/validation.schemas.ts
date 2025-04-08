@@ -98,6 +98,9 @@ const totpSchema = z.object({
 	code: z.string().length(6, "TOTP code must be 6 digits"),
 });
 
+const todoSchema = z.object({
+	todo: z.string().nonempty("Todo is required"),
+});
 const linkPhoneSchema = z.object({
 	country: z.tuple([z.string(), z.string().optional()]),
 	phone_number: z.string(),
@@ -117,4 +120,5 @@ export {
 	totpSchema,
 	linkPhoneSchema,
 	reverifySchema,
+	todoSchema
 };

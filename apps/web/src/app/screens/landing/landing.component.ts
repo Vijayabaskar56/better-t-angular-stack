@@ -13,7 +13,7 @@ interface Todo {
 	completed: boolean;
 }
 @Component({
-	selector: "app-todo",
+	selector: "app-landing",
 	template: `
       <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-gray-900 rounded-lg p-6">
@@ -80,11 +80,11 @@ interface Todo {
 	standalone: true,
 	imports: [CommonModule, TanStackField],
 })
-export class TodoComponent implements OnInit {
+export class LandingComponent implements OnInit {
 	queryToDo = injectQuery(() => ({
 		queryKey: ["todo"],
 		queryFn: () => lastValueFrom(
-			this._trpc.todo.create.mutate({ text: '' })
+			this._trpc.todo.getAll.query()
 		),
 	}));
 	mutateToDo = injectMutation(() => ({

@@ -9,10 +9,14 @@ import type { FastifyInstance } from "fastify";
 import prisma from "../../../prisma";
 import { sendMail } from "@server/lib/sendEmail";
 import type { SendMailParams } from "@server/types";
+import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient(process.env.DATABASE_URL!);
+const db = client.db();
+
 export const auth = (fastify: FastifyInstance) => betterAuth({
-    database: prismaAdapter(prisma, {
-        provider: "mongodb",
-    }),
+    database: mongodbAdapter(db),
     appName: 'my-app',
     trustedOrigins: [fastify.config.CORS_ORIGIN],
     // emailAndPassword: { enabled: true },
@@ -113,7 +117,8 @@ export const auth = (fastify: FastifyInstance) => betterAuth({
                         mail_footer: fastify.config.MAIL_FOOTER
                     }
                 }
-                await sendMail(params)
+                const result = await fastify.sendEmail(params)
+                console.log("🚀 ~ :121 ~ sendVerificationOTP ~ result:", result)
             },
             sendVerificationOnSignUp: true,
             expiresIn: 60 * 2 // 2 minutes

@@ -1,0 +1,95 @@
+<html>
+  <body style='width:100%;padding:0px;margin:0px;font-family:arial;'>
+    <table
+      align='center'
+      width='100%'
+      border='0'
+      cellspacing='0'
+      cellpadding='10'
+      style='margin:55px auto; width:100%; background-color:#fff; font-family:Arial, Helvetica, sans-serif; color:#333; border:1px solid #ccc;max-width:550px;'
+    >
+      <tr>
+        <td colspan='3' style='padding:0px;'><img
+            src='{{params.image_path}}'
+            style='width:100%;'
+          /></td>
+      </tr>
+      <tr>
+        <td colspan='3'>Hi <b>{{params.username}}</b>,</td>
+      </tr>
+      <tr>
+      </tr>
+      <tr>
+        <td><b>Your verification code is : {{params.otp}}</b></td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td>Enter this code in our
+          <b>{{params.app_name}}</b>
+          to activate your
+          <b>{{params.username}}</b>
+          account.</td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td><b>Step 1</b>
+          : The customer requests access to their account by entering a username
+          and password on the login page to access their account.‍ The OTP was
+          sending to the Registered Mail ID.
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td><b>Step 2</b>
+          : The customer types or copies and pastes the OTP into the verify
+          account pop-up and gains access to their account.‍
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td><b>Step 3</b>
+          : The OTP expires within a set period (often a few minutes) or after
+          the user enters it, making it useless to anyone else who accesses it
+          later.
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td colspan='3'>If you have any questions, send us an email
+          <a href='mailto:{{params.support_mail}}'>
+            {{params.support_mail}}.
+          </a></td>
+      </tr>
+      <tr>
+        <td colspan='3' align='center' height='10' style='padding:0px;'></td>
+      </tr>
+      <tr>
+        <td colspan='3' style='padding-top: 3px;padding-bottom: 3px;'>We’re glad
+          you’re here!</td>
+      </tr>
+      <tr>
+        <td
+          colspan='3'
+          style='padding-top: 3px;padding-bottom: 3px;'
+        >{{params.app_name}} Team</td>
+      </tr>
+      <tr>
+        <td
+          colspan='3'
+          height='50'
+          style='text-align:center; background-color:#F8F7F1;padding:0px;'
+        ><b>{{params.mail_footer}}</b></td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -20,7 +20,7 @@ function getLoggerOptions() {
     if (process.stdout.isTTY) {
         return {
             level: 'info',
-            file: path.join(__dirname, '../logs/app.log')
+            // file: path.join(__dirname, '../logs/app.log')
         }
     }
 
@@ -30,14 +30,8 @@ function getLoggerOptions() {
 const app = Fastify({
     logger: {
         level: 'info',
-        sync: false // Set to true in development if needed
+        // sync: false // Set to true in development if needed
     },
-    ajv: {
-        customOptions: {
-            coerceTypes: 'array', // change type of data to match type keyword
-            removeAdditional: 'all' // Remove additional body properties
-        }
-    }
 })
 
 async function init() {
@@ -45,7 +39,7 @@ async function init() {
     // Register your application as a normal plugin.
     // fp must be used to override default error handler
     app.register(fp(serviceApp))
-
+    console.log(app.config)
     // Delay is the number of milliseconds for the graceful close to finish
     closeWithGrace(
         { delay: process.env.FASTIFY_CLOSE_GRACE_DELAY! ? Number(process.env.FASTIFY_CLOSE_GRACE_DELAY) : 500 },

@@ -5,18 +5,13 @@ declare module 'fastify' {
   export interface FastifyInstance {
     config: {
       PORT: number;
-      MYSQL_HOST: string;
-      MYSQL_PORT: string;
-      MYSQL_USER: string;
-      MYSQL_PASSWORD: string;
-      MYSQL_DATABASE: string;
       COOKIE_SECRET: string;
       COOKIE_NAME: string;
       COOKIE_SECURED: boolean;
       RATE_LIMIT_MAX: number;
       UPLOAD_DIRNAME: string;
       UPLOAD_TASKS_DIRNAME: string;
-      MONGODB_CONNECTION_STRING: string,
+      DATABASE_URL: string,
       FASTIFY_CLOSE_GRACE_DELAY: number,
       LOG_LEVEL: string,
       CORS_ORIGIN: string,
@@ -24,6 +19,11 @@ declare module 'fastify' {
       SUPPORTMAIL: string,
       IMAGEURL: string,
       MAIL_FOOTER: string,
+      MAIL: string,
+      PASS: string,
+      REDIS_HOST: string,
+      REDIS_PORT: number,
+      REDIS_PASSWORD: string,
       S3_ENDPOINT: string,
       S3_SECRET_KEY: string,
       S3_ACCESS_ID: string,
@@ -36,34 +36,19 @@ declare module 'fastify' {
 const schema = {
   type: 'object',
   required: [
-    'MYSQL_HOST',
-    'MYSQL_PORT',
-    'MYSQL_USER',
-    'MYSQL_PASSWORD',
-    'MYSQL_DATABASE',
+    'PORT',
+    'DATABASE_URL',
+    'MAIL',
+    'PASS',
+    'REDIS_HOST',
+    'REDIS_PORT',
+    'REDIS_PASSWORD',
+    'S3_ENDPOINT',
     'COOKIE_SECRET',
     'COOKIE_NAME',
     'COOKIE_SECURED'
   ],
   properties: {
-    // Database
-    MYSQL_HOST: {
-      type: 'string',
-      default: 'localhost'
-    },
-    MYSQL_PORT: {
-      type: 'number',
-      default: 3306
-    },
-    MYSQL_USER: {
-      type: 'string'
-    },
-    MYSQL_PASSWORD: {
-      type: 'string'
-    },
-    MYSQL_DATABASE: {
-      type: 'string'
-    },
 
     // Security
     COOKIE_SECRET: {
@@ -80,7 +65,43 @@ const schema = {
       type: 'number',
       default: 100 // Put it to 4 in your .env file for tests
     },
-
+    // Email
+    MAIL_FOOTER: {
+      type: 'string',
+      default: 'Firebee'
+    },
+    APP_NAME: {
+      type: 'string',
+      default: 'Firebee'
+    },
+    SUPPORTMAIL: {
+      type: 'string',
+      default: 'walletex1@firebeefiling.com'
+    },
+    IMAGEURL: {
+      type: 'string',
+      default: 'https://firebeefiling.com/images/logo.png'
+    },
+    MAIL: {
+      type: 'string',
+      default: 'coinlivret@firebeefiling.com',
+    },
+    PASS: {
+      type: 'string',
+      default: "fdkhuYJHJgufgJfttgh34343"
+    },
+    FASTIFY_CLOSE_GRACE_DELAY: {
+      type: 'number',
+      default: 1000
+    },
+    LOG_LEVEL: {
+      type: 'string',
+      default: 'info'
+    },
+    CORS_ORIGIN: {
+      type: 'string',
+      default: '*'
+    },
     // Files
     UPLOAD_DIRNAME: {
       type: 'string',
@@ -91,7 +112,41 @@ const schema = {
     UPLOAD_TASKS_DIRNAME: {
       type: 'string',
       default: 'tasks'
-    }
+    },
+    // Redis
+    REDIS_HOST: {
+      type: 'string',
+      default: 'localhost'
+    },
+    REDIS_PORT: {
+      type: 'number',
+      default: 6379
+    },
+    REDIS_PASSWORD: {
+      type: 'string',
+      default: 'your-redis-password'
+    },
+    // S3
+    S3_ENDPOINT: {
+      type: 'string',
+      default: 'https://sgp1.digitaloceanspaces.com/'
+    },
+    S3_SECRET_KEY: {
+      type: 'string',
+      default: "xmdRAJbdfX2qRWRo2NzhoErXAG+j+kATnHfICUoaG1k"
+    },
+    S3_ACCESS_ID: {
+      type: 'string',
+      default: "DO00FQLNZ8WT9JMRGE4P"
+    },
+    S3_REGION: {
+      type: 'string',
+      default: 'sgp1'
+    },
+    S3_BUCKET: {
+      type: 'string',
+      default: 'firebee'
+    },
   }
 }
 
