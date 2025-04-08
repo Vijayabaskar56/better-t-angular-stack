@@ -9,11 +9,9 @@ export type CreateContextOptions = {
 };
 
 export async function createContext({ req, res }: CreateFastifyContextOptions) {
-  console.log("🚀 ~ :10 ~ createContext ~ context:", req, res)
   const session = await req.server.auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
-  console.log("🚀 ~ :16 ~ createContext ~ session:", session)
   return {
     session,
     fastify: req.server

@@ -10,24 +10,17 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-    console.log("🚀 ~ :13 ~ protectedProcedure ~ ctx:", ctx)
+    if (!ctx.session) {
+        throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Authentication required",
+            cause: "No session",
+        });
+    }
     return next({
         ctx: {
-            ...ctx
-        }
-    })
-    // console.log("🚀 ~ :13 ~ protectedProcedure ~ ctx:", ctx.session)
-    // if (!ctx.session) {
-    //     throw new TRPCError({
-    //         code: "UNAUTHORIZED",
-    //         message: "Authentication required",
-    //         cause: "No session",
-    //     });
-    // }
-    // return next({
-    //     ctx: {
-    //         ...ctx,
-    //         session: ctx.session,
-    //     },
-    // });
+            ...ctx,
+            session: ctx.session,
+        },
+    });
 });

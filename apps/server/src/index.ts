@@ -6,6 +6,7 @@ import type { FastifyBaseLogger, FastifyInstance, FastifyPluginOptions, FastifyT
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import appRouter from './routers'
 import { connectDB } from './db'
+import { createContext } from './lib/context'
 
 export default async function serviceApp(
 	fastify: FastifyInstance<
@@ -42,7 +43,8 @@ export default async function serviceApp(
 	fastify.register(trpcFastify.fastifyTRPCPlugin, {
 		prefix: '/api/trpc',
 		trpcOptions: {
-			router: appRouter
+			router: appRouter,
+			createContext: createContext
 		}
 	})
 
