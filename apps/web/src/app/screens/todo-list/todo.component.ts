@@ -2,14 +2,13 @@ import { CommonModule } from "@angular/common";
 import { Component, type OnInit, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { todoSchema } from "@src/app/models/validation.schemas";
+import { ApisService } from "@src/app/services/apis.service";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
 import {
 	QueryClient,
 	injectMutation,
 	injectQuery,
 } from "@tanstack/angular-query-experimental";
-import { lastValueFrom } from "rxjs";
-import { injectTrpcClient } from "../../utils/trpc-client";
 
 interface Todo {
 	_id: string | unknown;
@@ -85,14 +84,15 @@ interface Todo {
 	imports: [CommonModule, TanStackField],
 })
 export class TodoComponent implements OnInit {
+
 	queryToDo = injectQuery(() => ({
 		queryKey: ["todo"],
-		queryFn: () => lastValueFrom(this._trpc.todo.getAll.query()),
+		queryFn: () => this._trpc.proxy.todo.getAll.query(),
 	}));
 	mutateToDo = injectMutation(() => ({
 		mutationFn: (todo: string) => {
 			console.log("🚀 ~ :100 ~ TodoComponent ~ mutateToDo ~ todo:", todo);
-			return lastValueFrom(this._trpc.todo.create.mutate({ text: todo }));
+			return this._trpc.proxy.todo.create.mutate({ text: todo });
 		},
 		onSuccess: () => {
 			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
@@ -100,12 +100,10 @@ export class TodoComponent implements OnInit {
 	}));
 	updateToDo = injectMutation(() => ({
 		mutationFn: (todo: Todo) => {
-			return lastValueFrom(
-				this._trpc.todo.toggle.mutate({
-					id: String(todo._id),
-					completed: todo.completed,
-				}),
-			);
+			return this._trpc.proxy.todo.toggle.mutate({
+				id: String(todo._id),
+				completed: todo.completed,
+			});
 		},
 		onSuccess: () => {
 			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
@@ -114,13 +112,13 @@ export class TodoComponent implements OnInit {
 	deleteTodo = injectMutation(() => ({
 		mutationFn: (id: string) => {
 			console.log("🚀 ~ :110 ~ TodoComponent ~ deleteTodo ~ id:", id);
-			return lastValueFrom(this._trpc.todo.delete.mutate({ id: id }));
+			return this._trpc.proxy.todo.delete.mutate({ id: id });
 		},
 		onSuccess: () => {
 			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
 		},
 	}));
-	private _trpc = injectTrpcClient();
+	private _trpc = inject(ApisService);
 	queryClient = inject(QueryClient);
 	totpForm = injectForm({
 		defaultValues: {
@@ -137,7 +135,9 @@ export class TodoComponent implements OnInit {
 	canSubmit = injectStore(this.totpForm, (state) => state.canSubmit);
 	isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this._trpc.proxy.privateData.query()
+	}
 	addTodo(event: Event) {
 		event.preventDefault();
 		const target = event.target as HTMLInputElement;
@@ -147,4 +147,5 @@ export class TodoComponent implements OnInit {
 			this.mutateToDo.mutate(input.value);
 		}
 	}
+
 }
