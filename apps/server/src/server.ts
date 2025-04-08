@@ -28,10 +28,7 @@ function getLoggerOptions() {
 }
 
 const app = Fastify({
-    logger: {
-        level: 'info',
-        // sync: false // Set to true in development if needed
-    },
+    logger: true,
 })
 
 async function init() {

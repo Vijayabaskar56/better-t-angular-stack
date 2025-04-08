@@ -11,11 +11,11 @@ import { AccountComponent } from "./screens/account/account.component";
 import { Error404Component } from "./screens/error404/error404.component";
 import { ForgotPasswordComponent } from "./screens/forgot-password/forgot-password.component";
 import { GoogleVerificationComponent } from "./screens/google-verification/google-verification.component";
+import { LandingComponent } from "./screens/landing/landing.component";
 import { LoginComponent } from "./screens/login/login.component";
 import { OTPComponent } from "./screens/otp/otp.component";
 import { SignupComponent } from "./screens/signup/signup.component";
 import { TodoComponent } from "./screens/todo-list/todo.component";
-import { LandingComponent } from "./screens/landing/landing.component";
 export const routes: Routes = [
 	{ path: "shell", component: AppShellComponent },
 	{
@@ -23,9 +23,12 @@ export const routes: Routes = [
 		component: AppLayoutComponent,
 		children: [
 			{
-				path: "", component: AppComponent, pathMatch: "full", children: [
+				path: "",
+				component: AppComponent,
+				pathMatch: "full",
+				children: [
 					{ path: "", component: LandingComponent, pathMatch: "full" },
-				]
+				],
 			},
 			{ path: "todo", component: TodoComponent, pathMatch: "full" },
 		],

@@ -120,5 +120,5 @@ export {
 	totpSchema,
 	linkPhoneSchema,
 	reverifySchema,
-	todoSchema
+	todoSchema,
 };

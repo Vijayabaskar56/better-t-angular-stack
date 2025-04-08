@@ -7,9 +7,10 @@ const appRouter = router({
         return "OK";
     }),
     privateData: protectedProcedure.query(({ ctx }) => {
+        console.log("🚀 ~ :10 ~ privateData:protectedProcedure.query ~ ctx:", ctx)
         return {
             message: "This is private",
-            user: ctx.session.user,
+            // user: ctx.session.user,
         };
     }),
     greeting: publicProcedure.query(() => 'hello tRPC v10!'),

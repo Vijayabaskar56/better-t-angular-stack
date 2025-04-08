@@ -10,6 +10,7 @@ export async function createContext({ context }: CreateContextOptions) {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(context.req.headers),
   });
+  console.log("🚀 ~ :13 ~ createContext ~ session:", session)
 
   return {
     session,

@@ -1,18 +1,16 @@
 import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
 
 import { admin, captcha, emailOTP, twoFactor, username } from "better-auth/plugins";
 import { reverify } from "@better-auth-kit/reverify";
 import FastifyBetterAuth from 'fastify-better-auth';
 import fp from 'fastify-plugin';
 import type { FastifyInstance } from "fastify";
-import prisma from "../../../prisma";
 import { sendMail } from "@server/lib/sendEmail";
 import type { SendMailParams } from "@server/types";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.DATABASE_URL!);
+const client = new MongoClient(process.env?.DATABASE_URL as string ?? '');
 const db = client.db();
 
 export const auth = (fastify: FastifyInstance) => betterAuth({
