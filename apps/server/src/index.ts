@@ -9,13 +9,7 @@ import { connectDB } from './db'
 import { createContext } from './lib/context'
 
 export default async function serviceApp(
-	fastify: FastifyInstance<
-		Server<typeof IncomingMessage, typeof ServerResponse>,
-		IncomingMessage,
-		ServerResponse<IncomingMessage>,
-		FastifyBaseLogger,
-		FastifyTypeProviderDefault
-	>,
+	fastify: FastifyInstance,
 	opts: FastifyPluginOptions
 ) {
 	connectDB()
