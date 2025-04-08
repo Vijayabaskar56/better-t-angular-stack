@@ -1,5 +1,4 @@
 import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
-import { auth } from "./auth";
 import { fromNodeHeaders } from "better-auth/node";
 import type { FastifyInstance } from "fastify";
 
