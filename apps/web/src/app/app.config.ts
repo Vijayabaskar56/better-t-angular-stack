@@ -5,20 +5,26 @@ import {
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { provideRouter } from "@angular/router";
 
+// import { provideTrpcClient } from "./utils/trpc-client";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import {
 	QueryClient,
 	provideTanStackQuery,
 	withDevtools,
 } from "@tanstack/angular-query-experimental";
 import { routes } from "./app.routes";
-// import { provideTrpcClient } from "./utils/trpc-client";
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { WithCredentialsInterceptor } from "./interceptors/with-credentials.interceptor";
 
+import type {
+	HttpHandlerFn,
+	HttpInterceptorFn,
+	HttpRequest,
+} from "@angular/common/http";
 
-import type { HttpRequest, HttpHandlerFn, HttpInterceptorFn } from "@angular/common/http";
-
-const withCredentialsInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
+const withCredentialsInterceptor: HttpInterceptorFn = (
+	req: HttpRequest<unknown>,
+	next: HttpHandlerFn,
+) => {
 	const modifiedReq = req.clone({
 		withCredentials: true,
 	});
@@ -29,9 +35,7 @@ export const appConfig: ApplicationConfig = {
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
 		provideAnimations(),
-		provideHttpClient(
-			withInterceptors([withCredentialsInterceptor])
-		),
+		provideHttpClient(withInterceptors([withCredentialsInterceptor])),
 		// provideTrpcClient(),
 		provideTanStackQuery(
 			new QueryClient(),

@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, type OnInit, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { todoSchema } from "@src/app/models/validation.schemas";
+import { ApisService } from "@src/app/services/apis.service";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
 import {
 	QueryClient,
@@ -9,7 +10,6 @@ import {
 	injectQuery,
 } from "@tanstack/angular-query-experimental";
 import { lastValueFrom } from "rxjs";
-import { ApisService } from "@src/app/services/apis.service";
 
 interface Todo {
 	_id: string | unknown;
@@ -85,7 +85,6 @@ interface Todo {
 	imports: [CommonModule, TanStackField],
 })
 export class LandingComponent implements OnInit {
-
 	queryToDo = injectQuery(() => ({
 		queryKey: ["todo"],
 		queryFn: () => this._trpc.proxy.todo.getAll.query(),
@@ -137,7 +136,7 @@ export class LandingComponent implements OnInit {
 	isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
 
 	ngOnInit(): void {
-		this._trpc.proxy.privateData.query()
+		this._trpc.proxy.privateData.query();
 	}
 	addTodo(event: Event) {
 		event.preventDefault();
@@ -148,5 +147,4 @@ export class LandingComponent implements OnInit {
 			this.mutateToDo.mutate(input.value);
 		}
 	}
-
 }

@@ -1,16 +1,16 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
-import { inject, Injectable, type Signal, signal } from '@angular/core';
-import type { AppRouter } from '../../../../server/src/routers/index';
+import { HttpClient } from "@angular/common/http";
+import { Injectable, type Signal, inject, signal } from "@angular/core";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { SuperJSON } from "superjson";
-import { HttpClient } from '@angular/common/http';
+import type { AppRouter } from "../../../../server/src/routers/index";
 
-const TRPC_URL = signal('http://localhost:3000/api/trpc')
+const TRPC_URL = signal("http://localhost:3000/api/trpc");
 
 @Injectable({
 	providedIn: "root",
 })
 export class ApisService {
-	private http = inject(HttpClient)
+	private http = inject(HttpClient);
 	public proxy = createTRPCProxyClient<AppRouter>({
 		transformer: SuperJSON,
 		links: [
@@ -19,11 +19,11 @@ export class ApisService {
 				fetch: (url, options) => {
 					return fetch(url, {
 						...options,
-						credentials: 'include',
-					})
+						credentials: "include",
+					});
 				},
 				headers: {
-					credentials: 'include',
+					credentials: "include",
 				},
 			}),
 		],

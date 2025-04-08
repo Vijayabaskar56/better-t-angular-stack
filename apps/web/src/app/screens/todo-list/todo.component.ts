@@ -84,7 +84,6 @@ interface Todo {
 	imports: [CommonModule, TanStackField],
 })
 export class TodoComponent implements OnInit {
-
 	queryToDo = injectQuery(() => ({
 		queryKey: ["todo"],
 		queryFn: () => this._trpc.proxy.todo.getAll.query(),
@@ -136,7 +135,7 @@ export class TodoComponent implements OnInit {
 	isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
 
 	ngOnInit(): void {
-		this._trpc.proxy.privateData.query()
+		this._trpc.proxy.privateData.query();
 	}
 	addTodo(event: Event) {
 		event.preventDefault();
@@ -147,5 +146,4 @@ export class TodoComponent implements OnInit {
 			this.mutateToDo.mutate(input.value);
 		}
 	}
-
 }
