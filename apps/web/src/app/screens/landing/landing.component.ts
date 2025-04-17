@@ -5,20 +5,20 @@ import { todoSchema } from "@src/app/models/validation.schemas";
 import { ApisService } from "@src/app/services/apis.service";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
 import {
-	QueryClient,
-	injectMutation,
-	injectQuery,
+ QueryClient,
+ injectMutation,
+ injectQuery,
 } from "@tanstack/angular-query-experimental";
 import { lastValueFrom } from "rxjs";
 
 interface Todo {
-	_id: string | unknown;
-	text: string;
-	completed: boolean;
+ _id: string | unknown;
+ text: string;
+ completed: boolean;
 }
 @Component({
-	selector: "app-landing",
-	template: `
+ selector: "app-landing",
+ template: `
       <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-gray-900 rounded-lg p-6">
           <h1 class="text-2xl font-bold mb-1 text-white">Todo List</h1>
@@ -81,70 +81,66 @@ interface Todo {
         </div>
       </div>
     `,
-	standalone: true,
-	imports: [CommonModule, TanStackField],
+ standalone: true,
+ imports: [CommonModule, TanStackField],
 })
 export class LandingComponent implements OnInit {
-	queryToDo = injectQuery(() => ({
-		queryKey: ["todo"],
-		queryFn: () => this._trpc.proxy.todo.getAll.query(),
-	}));
-	mutateToDo = injectMutation(() => ({
-		mutationFn: (todo: string) => {
-			console.log("🚀 ~ :100 ~ TodoComponent ~ mutateToDo ~ todo:", todo);
-			return this._trpc.proxy.todo.create.mutate({ text: todo });
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	updateToDo = injectMutation(() => ({
-		mutationFn: (todo: Todo) => {
-			return this._trpc.proxy.todo.toggle.mutate({
-				id: String(todo._id),
-				completed: todo.completed,
-			});
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	deleteTodo = injectMutation(() => ({
-		mutationFn: (id: string) => {
-			console.log("🚀 ~ :110 ~ TodoComponent ~ deleteTodo ~ id:", id);
-			return this._trpc.proxy.todo.delete.mutate({ id: id });
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	private _trpc = inject(ApisService);
-	queryClient = inject(QueryClient);
-	totpForm = injectForm({
-		defaultValues: {
-			todo: "",
-		},
-		validators: {
-			onChange: todoSchema,
-		},
-		onSubmit: async ({ value }) => {
-			console.log("🚀 ~ :94 ~ TodoComponent ~ onSubmit: ~ value:", value);
-			this.mutateToDo.mutate(value.todo);
-		},
-	});
-	canSubmit = injectStore(this.totpForm, (state) => state.canSubmit);
-	isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
+ queryToDo = injectQuery(() => ({
+  queryKey: ["todo"],
+  queryFn: () => this._trpc.proxy.todo.getAll.query(),
+ }));
+ mutateToDo = injectMutation(() => ({
+  mutationFn: (todo: string) => {
+   return this._trpc.proxy.todo.create.mutate({ text: todo });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ updateToDo = injectMutation(() => ({
+  mutationFn: (todo: Todo) => {
+   return this._trpc.proxy.todo.toggle.mutate({
+    id: String(todo._id),
+    completed: todo.completed,
+   });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ deleteTodo = injectMutation(() => ({
+  mutationFn: (id: string) => {
+   return this._trpc.proxy.todo.delete.mutate({ id: id });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ private _trpc = inject(ApisService);
+ queryClient = inject(QueryClient);
+ totpForm = injectForm({
+  defaultValues: {
+   todo: "",
+  },
+  validators: {
+   onChange: todoSchema,
+  },
+  onSubmit: async ({ value }) => {
+   this.mutateToDo.mutate(value.todo);
+  },
+ });
+ canSubmit = injectStore(this.totpForm, (state) => state.canSubmit);
+ isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
 
-	ngOnInit(): void {
-		this._trpc.proxy.privateData.query();
-	}
-	addTodo(event: Event) {
-		event.preventDefault();
-		const target = event.target as HTMLInputElement;
-		const input = target.querySelector("input");
-		console.log("🚀 ~ :108 ~ TodoComponent ~ input:", input?.value);
-		if (input) {
-			this.mutateToDo.mutate(input.value);
-		}
-	}
+ ngOnInit(): void {
+  this._trpc.proxy.privateData.query();
+ }
+ addTodo(event: Event) {
+  event.preventDefault();
+  const target = event.target as HTMLInputElement;
+  const input = target.querySelector("input");
+  if (input) {
+   this.mutateToDo.mutate(input.value);
+  }
+ }
 }

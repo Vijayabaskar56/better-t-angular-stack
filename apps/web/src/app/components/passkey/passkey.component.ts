@@ -9,47 +9,45 @@ import { loginSchema, reverifySchema } from "../../models/validation.schemas";
 import { AuthService } from "../../services/auth.service";
 
 @Component({
-	selector: "app-passkey",
-	imports: [CommonModule, RouterModule, TanStackField, LucideAngularModule],
-	standalone: true,
-	templateUrl: "./passkey.component.html",
-	styleUrl: "./passkey.component.css",
+ selector: "app-passkey",
+ imports: [CommonModule, RouterModule, TanStackField, LucideAngularModule],
+ standalone: true,
+ templateUrl: "./passkey.component.html",
+ styleUrl: "./passkey.component.css",
 })
 export class PasskeyComponent {
-	error = "";
-	showPassword = false;
-	readonly eyeOpen = Eye;
-	readonly eyeClosed = EyeClosed;
-	authService = inject(AuthService);
-	router = inject(Router);
-	loading = signal<boolean>(false);
-	logInForm = injectForm({
-		defaultValues: {
-			email: "",
-		},
-		validators: {
-			onChange: reverifySchema,
-		},
-		onSubmit: async (values) => {
-			await this.authService.authClient.emailOtp.sendVerificationOtp(
-				{
-					email: values.value.email,
-					type: "email-verification",
-				},
-				{
-					onSuccess: (ctx) => {
-						console.log("🚀 ~ :61 ~ SignupComponent ~ onSuccess: ~ ctx:", ctx);
+ error = "";
+ showPassword = false;
+ readonly eyeOpen = Eye;
+ readonly eyeClosed = EyeClosed;
+ authService = inject(AuthService);
+ router = inject(Router);
+ loading = signal<boolean>(false);
+ logInForm = injectForm({
+  defaultValues: {
+   email: "",
+  },
+  validators: {
+   onChange: reverifySchema,
+  },
+  onSubmit: async (values) => {
+   await this.authService.authClient.emailOtp.sendVerificationOtp(
+    {
+     email: values.value.email,
+     type: "email-verification",
+    },
+    {
+     onSuccess: (ctx) => {
 
-						this.router.navigate(["/auth/otp", { email: values.value.email }]);
-					},
-					onError: (ctx) => {
-						console.log("🚀 ~ :72 ~ SignupComponent ~ onSuccess: ~ ctx:", ctx);
-						alert(ctx.error.message);
-					},
-				},
-			);
-		},
-	});
-	canSubmit = injectStore(this.logInForm, (state) => state.canSubmit);
-	isSubmitting = injectStore(this.logInForm, (state) => state.isSubmitting);
+      this.router.navigate(["/auth/otp", { email: values.value.email }]);
+     },
+     onError: (ctx) => {
+      alert(ctx.error.message);
+     },
+    },
+   );
+  },
+ });
+ canSubmit = injectStore(this.logInForm, (state) => state.canSubmit);
+ isSubmitting = injectStore(this.logInForm, (state) => state.isSubmitting);
 }
