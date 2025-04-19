@@ -1,20 +1,19 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import {
- Facebook,
- Hash,
- LucideAngularModule,
- Twitter,
- Youtube,
-
+	Facebook,
+	Hash,
+	LucideAngularModule,
+	Twitter,
+	Youtube,
 } from "lucide-angular";
 import { AuthService } from "../services/auth.service";
 
 @Component({
- selector: "app-footer",
- standalone: true,
- imports: [CommonModule, LucideAngularModule],
- template: `<footer class="footer sm:footer-horizontal text-base-content items-center p-4">
+	selector: "app-footer",
+	standalone: true,
+	imports: [CommonModule, LucideAngularModule],
+	template: `<footer class="footer sm:footer-horizontal text-base-content items-center p-4">
   <aside class="grid-flow-col items-center">
   <i-lucide [img]="hashTag" class="w-5 h-5"></i-lucide>
     <p>Copyright © {{year}} - All right reserved</p>
@@ -33,17 +32,17 @@ import { AuthService } from "../services/auth.service";
 </footer>`,
 })
 export class FooterComponent {
- userInitials = "U"; // This could be dynamic based on user's name
- year = new Date().getFullYear();
- authService = inject(AuthService);
- readonly hashTag = Hash;
- readonly twitter = Twitter;
- readonly youtube = Youtube;
- readonly facebook = Facebook;
+	userInitials = "U"; // This could be dynamic based on user's name
+	year = new Date().getFullYear();
+	authService = inject(AuthService);
+	readonly hashTag = Hash;
+	readonly twitter = Twitter;
+	readonly youtube = Youtube;
+	readonly facebook = Facebook;
 
- // isAuthenticated$ = this.authService.authClient.getSession();
+	// isAuthenticated$ = this.authService.authClient.getSession();
 
- logout() {
-  this.authService.authClient.signOut();
- }
+	logout() {
+		this.authService.authClient.signOut();
+	}
 }
