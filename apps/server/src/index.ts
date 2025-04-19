@@ -14,8 +14,8 @@ export default async function serviceApp(
 ) {
  connectDB();
 
- // biome-ignore lint/performance/noDelete: <explanation>
- delete opts.skipOverride; // This option only serves testing purpose
+ // biome-ignore lint/performance/noDelete: This option only serves testing purpose
+ delete opts.skipOverride;
  // This loads all external plugins defined in plugins/external
  // those should be registered first as your custom plugins might depend on them
  await fastify.register(fastifyAutoload, {
@@ -32,8 +32,7 @@ export default async function serviceApp(
   dir: path.join(__dirname, 'plugins/custom'),
   options: { ...opts }
  });
- // This loads all plugins defined in routes
- // // define your routes in one of these
+ // This loads all Routers defined in routers/ with trpc
  fastify.register(trpcFastify.fastifyTRPCPlugin, {
   prefix: '/api/trpc',
   trpcOptions: {

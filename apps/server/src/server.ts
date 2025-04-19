@@ -20,6 +20,7 @@ function getLoggerOptions() {
  if (process.stdout.isTTY) {
   return {
    level: 'info',
+   // if you want to log to a file, you can use the file option
    // file: path.join(__dirname, '../logs/app.log')
   };
  }

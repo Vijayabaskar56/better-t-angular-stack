@@ -86,6 +86,5 @@ declare module 'fastify' {
 }
 export default fp(mailerPlugin, {
  name: 'custom-mailer',
- fastify: '4.x || 5.x', // Or whatever Fastify version you're using
 });
 
