@@ -4,18 +4,18 @@ import { RouterOutlet } from "@angular/router";
 import { ThemeSwitcherComponent } from "../components/theme-switcher/theme-switcher.component";
 
 interface AuthLayoutConfig {
-	imageUrl: string;
-	title: string;
-	description: string;
-	imagePosition?: "left" | "right";
-	copyright?: string;
+ imageUrl: string;
+ title: string;
+ description: string;
+ imagePosition?: "left" | "right";
+ copyright?: string;
 }
 
 @Component({
-	selector: "app-auth-layout",
-	standalone: true,
-	imports: [CommonModule, ThemeSwitcherComponent, RouterOutlet],
-	template: `
+ selector: "app-auth-layout",
+ standalone: true,
+ imports: [CommonModule, ThemeSwitcherComponent, RouterOutlet],
+ template: `
     <div class="min-h-screen flex" [class.flex-row-reverse]="config.imagePosition === 'right'">
       <!-- Cover Image Section -->
       <div class="hidden lg:block w-1/2 relative">
@@ -29,7 +29,7 @@ interface AuthLayoutConfig {
               <h1 class="text-4xl font-bold mb-4">{{ config.title }}</h1>
               <p class="text-lg opacity-90">{{ config.description }}</p>
             </div>
-            <p class="text-sm opacity-75">{{ config.copyright || '© 2025 AuthFlow. All rights reserved.' }}</p>
+            <p class="text-sm opacity-75">{{ config.copyright || '© 2025 better-t-angular-stack. All rights reserved.' }}</p>
           </div>
         </div>
       </div>
@@ -50,12 +50,12 @@ interface AuthLayoutConfig {
   `,
 })
 export class AuthLayoutComponent {
-	@Input() config: AuthLayoutConfig = {
-		imageUrl:
-			"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.0.3",
-		title: "Welcome to AuthFlow",
-		description:
-			"Secure, simple, and seamless authentication for your applications.",
-		imagePosition: "left",
-	};
+ @Input() config: AuthLayoutConfig = {
+  imageUrl:
+   "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.0.3",
+  title: "Welcome to Better-t-angular-stack",
+  description:
+   "Secure, simple, and seamless authentication for your applications.",
+  imagePosition: "left",
+ };
 }

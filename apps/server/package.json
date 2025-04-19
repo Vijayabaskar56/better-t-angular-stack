@@ -7,9 +7,7 @@
     "test": "jest",
     "build": "tsc -p tsconfig.json",
     "format": "biome format src",
-    "lint": "biome check src --fix",
-    "db:push": "prisma db push --schema ./prisma/schema",
-    "db:studio": "prisma studio"
+    "lint": "biome check src --fix"
   },
   "dependencies": {
     "@better-auth-kit/reverify": "^0.2.0",
@@ -28,7 +26,6 @@
     "@fastify/under-pressure": "^9.0.3",
     "@fastify/view": "^11.0.0",
     "@fastify/websocket": "^11.0.2",
-    "@prisma/client": "^6.5.0",
     "@trpc/client": "^10.25.0",
     "@trpc/server": "^10.25.0",
     "better-auth": "^1.2.5",
@@ -58,7 +55,6 @@
     "@types/ws": "^8.18.1",
     "nodemailer-express-handlebars": "^7.0.0",
     "nodemon": "3.0.2",
-    "prisma": "^6.5.0",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",

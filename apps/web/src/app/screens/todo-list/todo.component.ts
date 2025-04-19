@@ -1,29 +1,29 @@
 import { CommonModule } from "@angular/common";
-import { Component, type OnInit, inject, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component, type OnInit, inject } from "@angular/core";
 import { todoSchema } from "@src/app/models/validation.schemas";
 import { ApisService } from "@src/app/services/apis.service";
 import { TanStackField, injectForm, injectStore } from "@tanstack/angular-form";
 import {
-	QueryClient,
-	injectMutation,
-	injectQuery,
+ QueryClient,
+ injectMutation,
+ injectQuery,
 } from "@tanstack/angular-query-experimental";
+import type { Document, Types } from "mongoose";
 
 interface Todo {
-	_id: string | unknown;
-	text: string;
-	completed: boolean;
+ _id: string | unknown;
+ text: string;
+ completed: boolean;
 }
 @Component({
-	selector: "app-todo",
-	template: `
+ selector: "app-todo",
+ template: `
       <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-gray-900 rounded-lg p-6">
           <h1 class="text-2xl font-bold mb-1 text-white">Todo List</h1>
           <p class="text-gray-400 text-sm mb-6">Manage your tasks efficiently</p>
           <div class="flex gap-2 mb-6">
-		  <ng-container [tanstackField]="totpForm" name="todo" #todo="field">
+		  <ng-container [tanstackField]="todoForm" name="todo" #todo="field">
 			  <input
               type="text"
 			  [name]="todo.api.name" [id]="todo.api.name"
@@ -34,7 +34,7 @@ interface Todo {
 			  >
 			  <button
  				type="button"
-				(click)="totpForm.handleSubmit()"
+				(click)="todoForm.handleSubmit()"
                 [disabled]="!canSubmit()"
               class="px-4 py-2 bg-gray-800 text-gray-200 rounded-lg hover:bg-gray-700 focus:outline-none"
 			  >
@@ -46,7 +46,7 @@ interface Todo {
                     <span class="label-text-alt text-error">{{ error.message }}</span>
                     }
                     }
-		</ng-container>
+		 </ng-container>
           </div>
 		  @if(this.queryToDo.isLoading()) {
               <p>Loadingg.......</p>
@@ -60,7 +60,7 @@ interface Todo {
 					  <input
 					  type="checkbox"
 					  class="w-5 h-5 bg-gray-700 border-gray-600 rounded"
-					  (click)="updateToDo.mutate($any($event).target.checked)"
+ 						(change)="toggleTodo(todo , $any($event).target.checked)"
 					  >
 					  <span [class.line-through]="todo.completed" [class.text-gray-500]="todo.completed" class="flex-1">
 						  {{ todo.text }}
@@ -80,66 +80,71 @@ interface Todo {
         </div>
       </div>
     `,
-	standalone: true,
-	imports: [CommonModule, TanStackField],
+ standalone: true,
+ imports: [CommonModule, TanStackField],
 })
 export class TodoComponent implements OnInit {
-	queryToDo = injectQuery(() => ({
-		queryKey: ["todo"],
-		queryFn: () => this._trpc.proxy.todo.getAll.query(),
-	}));
-	mutateToDo = injectMutation(() => ({
-		mutationFn: (todo: string) => {
-			return this._trpc.proxy.todo.create.mutate({ text: todo });
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	updateToDo = injectMutation(() => ({
-		mutationFn: (todo: Todo) => {
-			return this._trpc.proxy.todo.toggle.mutate({
-				id: String(todo._id),
-				completed: todo.completed,
-			});
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	deleteTodo = injectMutation(() => ({
-		mutationFn: (id: string) => {
-			return this._trpc.proxy.todo.delete.mutate({ id: id });
-		},
-		onSuccess: () => {
-			this.queryClient.invalidateQueries({ queryKey: ["todo"] });
-		},
-	}));
-	private _trpc = inject(ApisService);
-	queryClient = inject(QueryClient);
-	totpForm = injectForm({
-		defaultValues: {
-			todo: "",
-		},
-		validators: {
-			onChange: todoSchema,
-		},
-		onSubmit: async ({ value }) => {
-			this.mutateToDo.mutate(value.todo);
-		},
-	});
-	canSubmit = injectStore(this.totpForm, (state) => state.canSubmit);
-	isSubmitting = injectStore(this.totpForm, (state) => state.isSubmitting);
+ queryToDo = injectQuery(() => ({
+  queryKey: ["todo"],
+  queryFn: () => this._trpc.proxy.todo.getAll.query(),
+ }));
+ mutateToDo = injectMutation(() => ({
+  mutationFn: (todo: string) => {
+   return this._trpc.proxy.todo.create.mutate({ text: todo });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ updateToDo = injectMutation(() => ({
+  mutationFn: (todo: Todo) => {
+   console.log(todo, 'todoForm');
+   return this._trpc.proxy.todo.toggle.mutate({
+    id: String(todo._id),
+    completed: todo.completed,
+   });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ deleteTodo = injectMutation(() => ({
+  mutationFn: (id: string) => {
+   return this._trpc.proxy.todo.delete.mutate({ id: id });
+  },
+  onSuccess: () => {
+   this.queryClient.invalidateQueries({ queryKey: ["todo"] });
+  },
+ }));
+ private _trpc = inject(ApisService);
+ queryClient = inject(QueryClient);
+ todoForm = injectForm({
+  defaultValues: {
+   todo: "",
+  },
+  validators: {
+   onChange: todoSchema,
+  },
+  onSubmit: async ({ value }) => {
+   this.mutateToDo.mutate(value.todo);
+  },
+ });
+ canSubmit = injectStore(this.todoForm, (state) => state.canSubmit);
+ isSubmitting = injectStore(this.todoForm, (state) => state.isSubmitting);
 
-	ngOnInit(): void {
-		this._trpc.proxy.privateData.query();
-	}
-	addTodo(event: Event) {
-		event.preventDefault();
-		const target = event.target as HTMLInputElement;
-		const input = target.querySelector("input");
-		if (input) {
-			this.mutateToDo.mutate(input.value);
-		}
-	}
+ ngOnInit(): void {
+  this._trpc.proxy.privateData.query();
+ }
+ addTodo(event: Event) {
+  event.preventDefault();
+  const target = event.target as HTMLInputElement;
+  const input = target.querySelector("input");
+  if (input) {
+   this.mutateToDo.mutate(input.value);
+  }
+ }
+ toggleTodo(todo: Todo, checked: boolean) {
+  console.log(todo, checked);
+  this.updateToDo.mutate({ ...todo, completed: checked });
+ }
 }

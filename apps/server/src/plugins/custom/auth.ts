@@ -3,7 +3,7 @@ import type { SendMailParams } from "@server/types";
 import type { EnhancedFastifyInstance } from "@server/types/fastify";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { admin, captcha, emailOTP, twoFactor, username } from "better-auth/plugins";
+import { admin, anonymous, captcha, emailOTP, twoFactor, username } from "better-auth/plugins";
 import type { FastifyPluginAsync } from "fastify";
 import FastifyBetterAuth from 'fastify-better-auth';
 import fp from 'fastify-plugin';
@@ -121,7 +121,7 @@ export const auth = (fastify: EnhancedFastifyInstance) => betterAuth({
    expiresIn: 60 * 2 // 2 minutes
   }),
   twoFactor({
-   issuer: 'AuthFlow',
+   issuer: 'better-t-angular-stack',
    totpOptions: {
     digits: 6
    },
@@ -139,6 +139,9 @@ export const auth = (fastify: EnhancedFastifyInstance) => betterAuth({
   }),
   admin(),
   reverify(),
+  anonymous({
+   emailDomainName: "vijayabaskar.xyz"
+  })
   // captcha({
   //     provider: "cloudflare-turnstile", // or "google-recaptcha"
   //     secretKey: fastify.config.TURNSTILE_SECRET_KEY!,

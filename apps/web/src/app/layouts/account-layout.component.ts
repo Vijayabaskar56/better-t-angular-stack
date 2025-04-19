@@ -1,27 +1,26 @@
 import { CommonModule } from "@angular/common";
 import { Component, type OnInit, inject } from "@angular/core";
 import {
-	type Event,
-	NavigationEnd,
-	Router,
-	RouterOutlet,
+ type Event,
+ NavigationEnd,
+ Router,
+ RouterOutlet,
 } from "@angular/router";
 import { BottomNavbarComponent } from "../components/bottom-navbar/bottom-navbar.component";
-import { FooterComponent } from "../components/footer.component";
 import { NavbarComponent } from "../components/navbar/navbar.component";
 import { SidebarComponent } from "../components/sidebar/sidebar.component";
 
 @Component({
-	selector: "app-app-layout",
-	standalone: true,
-	imports: [
-		CommonModule,
-		RouterOutlet,
-		SidebarComponent,
-		BottomNavbarComponent,
-		NavbarComponent,
-	],
-	template: `
+ selector: "app-app-layout",
+ standalone: true,
+ imports: [
+  CommonModule,
+  RouterOutlet,
+  SidebarComponent,
+  BottomNavbarComponent,
+  NavbarComponent,
+ ],
+ template: `
   <div class="flex h-screen w-full overflow-hidden">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
@@ -46,19 +45,19 @@ import { SidebarComponent } from "../components/sidebar/sidebar.component";
   `,
 })
 export class AccountLayoutComponent implements OnInit {
-	private mainContent: HTMLElement | null = null;
-	private router = inject(Router);
-	constructor() {
-		this.router.events.subscribe((event: Event) => {
-			if (event instanceof NavigationEnd) {
-				if (this.mainContent) {
-					this.mainContent.scrollTop = 0;
-				}
-			}
-		});
-	}
+ private mainContent: HTMLElement | null = null;
+ private router = inject(Router);
+ constructor() {
+  this.router.events.subscribe((event: Event) => {
+   if (event instanceof NavigationEnd) {
+    if (this.mainContent) {
+     this.mainContent.scrollTop = 0;
+    }
+   }
+  });
+ }
 
-	ngOnInit(): void {
-		this.mainContent = document.getElementById("main-content");
-	}
+ ngOnInit(): void {
+  this.mainContent = document.getElementById("main-content");
+ }
 }

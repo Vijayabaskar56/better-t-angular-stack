@@ -1,59 +1,159 @@
-# AngularStarterKit
+# Angular Frontend Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+A modern, feature-rich Angular 19 frontend application with authentication, theming, and type-safe API communication. This application is part of a monorepo and is designed to work seamlessly with the Fastify backend API.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Modern Angular**: Built with Angular 19 using standalone components
+- **Type-safe API**: tRPC client for end-to-end type safety with the backend
+- **Authentication**: Comprehensive auth system with multiple authentication methods
+- **State Management**: TanStack Query for efficient data fetching and caching
+- **Form Handling**: TanStack Form for powerful form management
+- **UI Components**: DaisyUI components with TailwindCSS 4
+- **Theming**: Light/dark mode with system preference detection
+- **Notifications**: Toast notifications with ngx-sonner
+- **Icons**: Lucide icons for consistent and beautiful UI
+- **Responsive Design**: Mobile-friendly layouts with responsive components
 
-```bash
-ng serve
-```
+## Prerequisites
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Before running this application, ensure you have the following installed:
 
-## Code scaffolding
+- Node.js v18 or above
+- [pnpm](https://pnpm.io/) v10.7.1 or later
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Getting Started
 
-```bash
-ng generate component component-name
-```
+### Installation
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+From the root of the monorepo, install dependencies:
 
 ```bash
-ng build
+pnpm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Development Server
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To start the development server:
 
 ```bash
-ng test
+# From the root of the monorepo
+pnpm dev:web
+
+# Or from the web directory
+pnpm dev
 ```
 
-## Running end-to-end tests
+The application will be available at `http://localhost:3001`. It automatically reloads when you make changes to the source files.
 
-For end-to-end (e2e) testing, run:
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/     # Reusable UI components
+│   ├── guard/          # Route guards for authentication
+│   ├── layouts/        # Page layout components
+│   ├── models/         # Data models and interfaces
+│   ├── screens/        # Page components
+│   ├── services/       # Application services
+│   ├── utils/          # Utility functions
+│   ├── app.component.* # Root component
+│   ├── app.config.ts   # Application configuration
+│   └── app.routes.ts   # Application routes
+├── assets/            # Static assets
+└── styles.css         # Global styles with TailwindCSS
+```
+
+## Key Features
+
+### Authentication
+
+The application uses better-auth for authentication with multiple methods:
+
+- Email/password authentication
+- Email OTP verification
+- Two-factor authentication
+- Passkey support
+- Anonymous authentication
+
+### Routing and Navigation
+
+The application has several main sections:
+
+- **Public Pages**: Landing page and other public content
+- **Authentication**: Login, signup, password recovery, and OTP verification
+- **Account**: User profile and account management
+- **Todo**: Example todo list application demonstrating CRUD operations
+
+### Theming
+
+The application supports light and dark themes with system preference detection. The theme can be toggled using the theme switcher component.
+
+### API Communication
+
+The application communicates with the backend using tRPC for type-safe API calls. This ensures that API contracts are enforced at compile time.
+
+## Building for Production
+
+To build the application for production:
 
 ```bash
-ng e2e
+# From the root of the monorepo
+pnpm build
+
+# Or from the web directory
+pnpm build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+This will create optimized production bundles in the `dist/` directory.
+
+## Testing
+
+To run unit tests:
+
+```bash
+pnpm test
+```
+
+The application uses Karma and Jasmine for unit testing.
+
+## Code Quality
+
+The project uses several tools to maintain code quality:
+
+- **TypeScript**: Strict type checking
+- **Biome**: Modern linting and formatting
+- **Turborepo**: Build system caching and optimization
+
+To lint the code:
+
+```bash
+pnpm lint
+```
+
+To format the code:
+
+```bash
+pnpm format
+```
+
+## Integration with Backend
+
+This frontend application is designed to work with the Fastify backend API in this monorepo. It connects to the backend at `http://localhost:3000` by default.
+
+## Environment Configuration
+
+The application uses environment files for configuration:
+
+- `environments/enviroments.ts` - Development environment
+- `environments/environment.prod.ts` - Production environment
 
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular Documentation](https://angular.dev/)
+- [TailwindCSS Documentation](https://tailwindcss.com/docs)
+- [DaisyUI Documentation](https://daisyui.com/docs/)
+- [TanStack Query Documentation](https://tanstack.com/query/latest/docs/angular/overview)
+- [TanStack Form Documentation](https://tanstack.com/form/latest/docs/angular/overview)
+- [tRPC Documentation](https://trpc.io/docs/)

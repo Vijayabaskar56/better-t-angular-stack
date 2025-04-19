@@ -1,7 +1,6 @@
 import { db } from "@server/db/models";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-
 import { publicProcedure, router } from "../lib/trpc";
 
 export const todoRouter = router({
@@ -11,12 +10,12 @@ export const todoRouter = router({
 
  create: publicProcedure
   .input(z.object({ text: z.string().min(1) }))
-  .mutation(async ({ input }) => {
+  .mutation(async ({ input, ctx }) => {
    try {
     const data = await db.todo.create({
      text: input.text,
     });
-    console.log(data);
+    ctx.fastify.log.info(data);
     return data;
 
    } catch (error) {
@@ -31,7 +30,9 @@ export const todoRouter = router({
   .input(z.object({ id: z.string(), completed: z.boolean() }))
   .mutation(async ({ input }) => {
    try {
-    return await db.todo.updateOne({ id: input.id }, { completed: input.completed });
+    const data = await db.todo.findOneAndUpdate({ _id: input.id }, { completed: input.completed });
+    console.log(input, "input", data);
+    return data;
    } catch (error) {
     throw new TRPCError({
      code: "NOT_FOUND",

@@ -3,9 +3,12 @@
     <div class="flex items-center justify-between py-3.5 md:justify-start">
       <!-- Mobile Navigation Menu Button-->
       <div class="sm:order-1 md:hidden">
-        <button (click)="toggleMobileMenu()" type="button"
+        <button
+          (click)="toggleMobileMenu()"
+          type="button"
           class="inline-flex items-center justify-center rounded-md bg-muted p-2 text-muted-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary hover:bg-muted-foreground hover:text-muted"
-          aria-expanded="false">
+          aria-expanded="false"
+        >
           <span class="sr-only">Open menu</span>
           <!-- Heroicon name: outline/menu -->
           <i-lucide [name]="menu"></i-lucide>
@@ -14,11 +17,17 @@
       </div>
 
       <!-- Logo -->
-      <div class="flex items-center justify-start sm:order-2 md:mr-10 lg:hidden">
-        <a class="flex items-center justify-center rounded bg-primary p-2 focus:outline-none focus:ring-1">
+      <div
+        class="flex items-center justify-start sm:order-2 md:mr-10 lg:hidden"
+      >
+        <a
+          class="flex items-center justify-center rounded bg-primary p-2 focus:outline-none focus:ring-1"
+        >
           <!-- <svg-icon src="assets/icons/logo.svg"></svg-icon> -->
         </a>
-        <b class="hidden pl-3 text-sm font-bold text-foreground sm:block"> Angular Tailwind </b>
+        <b class="hidden pl-3 text-sm font-bold text-foreground sm:block">
+          Angular Tailwind
+        </b>
       </div>
 
       <!-- Desktop Menu -->
@@ -31,6 +40,9 @@
         <app-theme-switcher></app-theme-switcher>
         @if (!isAuthenticated$) {
         <div>
+          <button (click)="anaonymousLogin()" class="btn btn-accent">
+            Login Anaonymous
+          </button>
           <a routerLink="/auth/login" class="btn btn-ghost">Login</a>
           <a routerLink="/auth/signup" class="btn btn-primary ml-2">Sign up</a>
         </div>

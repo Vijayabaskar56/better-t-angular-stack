@@ -28,6 +28,7 @@ declare module 'fastify' {
    S3_ACCESS_ID: string,
    S3_REGION: string,
    S3_BUCKET: string,
+   DATABASE_NAME: string,
   };
  }
 }
@@ -45,7 +46,14 @@ const schema = {
   'S3_ENDPOINT',
   'COOKIE_SECRET',
   'COOKIE_NAME',
-  'COOKIE_SECURED'
+  'COOKIE_SECURED',
+  'FASTIFY_CLOSE_GRACE_DELAY',
+  'LOG_LEVEL',
+  'CORS_ORIGIN',
+  'S3_SECRET_KEY',
+  'S3_ACCESS_ID',
+  'S3_REGION',
+  'S3_BUCKET',
  ],
  properties: {
 
@@ -145,6 +153,18 @@ const schema = {
   S3_BUCKET: {
    type: 'string',
    default: 'firebee'
+  },
+  DATABASE_NAME: {
+   type: 'string',
+   default: 'test'
+  },
+  PORT: {
+   type: 'number',
+   default: 3000
+  },
+  DATABASE_URL: {
+   type: 'string',
+   default: 'mongodb://localhost:27017/test'
   },
  }
 };

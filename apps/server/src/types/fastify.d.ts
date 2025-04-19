@@ -33,6 +33,7 @@ export interface EnhancedFastifyInstance extends BaseFastifyInstance {
   S3_ACCESS_ID: string;
   S3_REGION: string;
   S3_BUCKET: string;
+  DATABASE_NAME: string;
  };
  emitter: EventEmitter;
 

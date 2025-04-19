@@ -2,18 +2,14 @@ import path from 'node:path';
 
 import fastifyAutoload from '@fastify/autoload';
 import * as trpcFastify from '@trpc/server/adapters/fastify';
-import type { FastifyBaseLogger, FastifyInstance, FastifyPluginOptions, FastifyTypeProviderDefault } from 'fastify';
-import type { IncomingMessage, Server, ServerResponse } from 'node:http';
-import appRouter from './routers';
-import { connectDB } from './db';
+import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { createContext } from './lib/context';
+import appRouter from './routers';
 
 export default async function serviceApp(
  fastify: FastifyInstance,
  opts: FastifyPluginOptions
 ) {
- connectDB();
-
  // biome-ignore lint/performance/noDelete: This option only serves testing purpose
  delete opts.skipOverride;
  // This loads all external plugins defined in plugins/external
