@@ -75,27 +75,27 @@ const schema = {
   // Email
   MAIL_FOOTER: {
    type: 'string',
-   default: 'Firebee'
+   default: 'Your Company'
   },
   APP_NAME: {
    type: 'string',
-   default: 'Firebee'
+   default: 'Better-t-angular-stack'
   },
   SUPPORTMAIL: {
    type: 'string',
-   default: 'walletex1@firebeefiling.com'
+   default: 'example@gmail.com'
   },
   IMAGEURL: {
    type: 'string',
-   default: 'https://firebeefiling.com/images/logo.png'
+   default: 'your-image-url'
   },
   MAIL: {
    type: 'string',
-   default: 'coinlivret@firebeefiling.com',
+   default: 'example@gmail.com',
   },
   PASS: {
    type: 'string',
-   default: "fdkhuYJHJgufgJfttgh34343"
+   default: "email-password"
   },
   FASTIFY_CLOSE_GRACE_DELAY: {
    type: 'number',
@@ -140,11 +140,11 @@ const schema = {
   },
   S3_SECRET_KEY: {
    type: 'string',
-   default: "xmdRAJbdfX2qRWRo2NzhoErXAG+j+kATnHfICUoaG1k"
+   default: "your-bucket-secret"
   },
   S3_ACCESS_ID: {
    type: 'string',
-   default: "DO00FQLNZ8WT9JMRGE4P"
+   default: "your-bucket-access-id"
   },
   S3_REGION: {
    type: 'string',
@@ -152,7 +152,7 @@ const schema = {
   },
   S3_BUCKET: {
    type: 'string',
-   default: 'firebee'
+   default: 'your-bucket-name'
   },
   DATABASE_NAME: {
    type: 'string',
