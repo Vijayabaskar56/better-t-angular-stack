@@ -1,6 +1,10 @@
 # Angular & Fastify Monorepo
 
-A modern, full-stack TypeScript monorepo powered by [Turborepo](https://turbo.build/) featuring an Angular 19 frontend with a Fastify backend. This project provides a comprehensive foundation for building scalable web applications with best practices and modern tooling.
+A modern, full-stack TypeScript monorepo powered by [Turborepo](https://turbo.build/) featuring an Angular 19 frontend with a Fastify backend. This project provides a comprehensive foundation for building scalable web applications with best practices and modern tooling in place.
+
+## Inpiration
+
+This project was inspired by the [Better-t-stack](https://better-t-stack.amanv.dev/) loved the experience that I have had with it and wanted to create a similar setup with Angular and Fastify for my organization specific needs.
 
 ## Overview
 
